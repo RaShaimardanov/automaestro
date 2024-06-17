@@ -16,6 +16,7 @@ alembic = "^1.13.1"
 fluentogram = "^1.1.7"
 pydantic = "^2.7.4"
 pydantic-settings = "^2.3.3"
+asyncpg = "^0.29.0"
 
 
 [build-system]
