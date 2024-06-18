@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import String, func
+from sqlalchemy import String, func, BIGINT
 from sqlalchemy.dialects.postgresql import TIMESTAMP
 from sqlalchemy.orm import mapped_column, Mapped
 
@@ -12,6 +12,7 @@ class TimestampMixin:
 class UserMixin(TimestampMixin):
     __abstract__ = True
 
+    telegram_id: Mapped[int] = mapped_column(BIGINT, unique=True, nullable=False)
     first_name: Mapped[str] = mapped_column(String(128), nullable=True)
     last_name: Mapped[str] = mapped_column(String(128), nullable=True)
     phone_number: Mapped[str] = mapped_column(String(12), nullable=True)
