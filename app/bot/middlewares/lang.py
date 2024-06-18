@@ -8,6 +8,12 @@ from app.services.fluent import FluentService, configure_fluent
 
 
 class LangMiddleware(BaseMiddleware):
+    """
+    Cлужит для интеграции мультиязычной поддержки в телеграм-бот,
+    используя данные о языке пользователя,
+    что позволяет легко локализовать ответы и взаимодействие с ботом.
+    """
+
     async def __call__(
         self,
         handler: Callable[[TelegramObject, Dict[str, Any]], Awaitable[Any]],
