@@ -1,4 +1,4 @@
-from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncEngine
+from sqlalchemy.ext.asyncio import AsyncEngine, async_sessionmaker, create_async_engine
 from app.core.config import settings
 
 
@@ -43,11 +43,3 @@ engine: AsyncEngine = create_engine(
 )
 
 async_session_pool = get_async_session_maker(engine)
-
-
-async def get_async_session():
-    """
-    Контекстный менеджер для получения асинхронной сессии.
-    """
-    async with async_session_pool() as async_session:
-        yield async_session

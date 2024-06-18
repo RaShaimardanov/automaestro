@@ -4,11 +4,11 @@ from aiogram.types import Update
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
-from app.web.api.routers import main_router
 from app.core.logger import logger
 from app.core.config import settings
 from app.bot.main import bot, dispatcher
 from app.core.paths import STATIC_FOLDER
+from app.web.api.routers import main_router
 
 
 @asynccontextmanager
