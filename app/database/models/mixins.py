@@ -1,8 +1,8 @@
 from datetime import datetime
 
 from sqlalchemy import String, func, BIGINT
-from sqlalchemy.dialects.postgresql import TIMESTAMP
 from sqlalchemy.orm import mapped_column, Mapped
+from sqlalchemy.dialects.postgresql import TIMESTAMP
 
 
 class TimestampMixin:

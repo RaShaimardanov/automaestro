@@ -1,3 +1,5 @@
+from typing import Optional
+
 from sqlalchemy.dialects.postgresql import insert
 
 from app.database.models import User
@@ -6,7 +8,7 @@ from app.database.repo.base import BaseRepo
 
 class UserRepo(BaseRepo):
 
-    async def get_or_create_user(self, **kwargs) -> User | None:
+    async def get_or_create_user(self, **kwargs) -> Optional[User]:
         """
         Создает или обновляет нового пользователя в базе данных
         и возвращает объект User.
