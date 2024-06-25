@@ -1,4 +1,6 @@
 cmd-start = Привет, { $user }!
+main-menu-user = Вы находитесь в главном меню.
+    Выберите действие:
 register-car-scene-enter = Введите государственный номер Вашего автомобиля в формате <b>Н525ММ198</b>
 input-data-invalid = Пожалуйста,  проверьте корректность введенных данных.
 input-license-plate-number-used =

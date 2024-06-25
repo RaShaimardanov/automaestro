@@ -4,13 +4,16 @@ from fastapi.templating import Jinja2Templates
 
 from app.core.config import settings
 from app.core.paths import TEMPLATES_FOLDER
+from app.web.api.endpoints.admin.main import router as admin_router
 
-
-main_router = APIRouter(prefix=settings.API_PREFIX)
+router = APIRouter()
 templates = Jinja2Templates(directory=TEMPLATES_FOLDER)
 
 
-@main_router.get(path="/", response_class=HTMLResponse)
+@router.get(path="/", response_class=HTMLResponse)
 async def main_page(request: Request):
     """Функция для обработки запроса главной страницы."""
     return templates.TemplateResponse(request=request, name="index.html")
+
+
+router.include_router(admin_router)

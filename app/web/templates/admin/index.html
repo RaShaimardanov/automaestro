@@ -1,0 +1,15 @@
+{% extends "admin/base.html" %}
+{% block title %}Главная{% endblock title %}
+{% block name %}Главная{% endblock name %}
+{% block content %}
+<h6><a href="{{ url_for('get_add_poll_template') }}">Добавить новый опрос</a></h6>
+{% if polls %}
+     <ol class="list-group list-group-numbered">
+         {% for poll in polls %}
+            <li class="list-group-item">
+                <a href="{{ url_for('poll_detail', poll_id=poll.id) }}" class="link-underline-light fw-light">{{ poll.name }}</a>
+            </li>
+         {% endfor %}
+     </ol>
+{% endif %}
+{% endblock content %}

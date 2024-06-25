@@ -1,0 +1,25 @@
+{% extends "admin/base.html" %}
+{% block title %}Добавить новый опрос{% endblock title %}
+{% block name %}Добавить новый опрос{% endblock name %}
+{% block content %}
+<div class="col-md-7 col-lg-8">
+    <h4 class="mb-3">Добавить опрос</h4>
+      <form action="#" method="post" enctype="multipart/form-data" class="needs-validation">
+        <div class="row g-3">
+            <label class="form-label">
+                <input  id="name" name="name" type="text" placeholder="Название" class="form-control" required>
+            </label>
+            <label class="form-label">
+                <textarea id="description" name="description" placeholder="Описание" class="form-control"  rows="3" required></textarea>
+            </label>
+            <label class="form-label">
+                <input  id="slug" name="slug" type="text" placeholder="Ссылка" class="form-control" required>
+            </label>
+            <label class="form-label" for="image">
+                <input  id="image" name="image" type="file" class="form-control" placeholder="Файл">
+            </label>
+            <button type="submit" class="btn btn-primary">Добавить</button>
+        </div>
+      </form>
+</div>
+{% endblock content %}

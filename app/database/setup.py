@@ -1,5 +1,10 @@
-from sqlalchemy.ext.asyncio import AsyncEngine, async_sessionmaker, create_async_engine
+from sqlalchemy.ext.asyncio import (
+    AsyncEngine,
+    async_sessionmaker,
+    create_async_engine,
+)
 from app.core.config import settings
+from app.database.repo.requests import RequestsRepo
 
 
 def create_engine(
@@ -43,3 +48,8 @@ engine: AsyncEngine = create_engine(
 )
 
 async_session_pool = get_async_session_maker(engine)
+
+
+async def get_repo():
+    async with async_session_pool() as session:
+        yield RequestsRepo(session)
