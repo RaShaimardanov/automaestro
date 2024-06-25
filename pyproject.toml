@@ -17,6 +17,7 @@ fluentogram = "^1.1.7"
 pydantic = "^2.7.4"
 pydantic-settings = "^2.3.3"
 asyncpg = "^0.29.0"
+python-multipart = "^0.0.9"
 
 
 [build-system]

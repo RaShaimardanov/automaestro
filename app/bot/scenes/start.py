@@ -5,9 +5,9 @@ from aiogram.filters import CommandStart, CommandObject
 from fluentogram import TranslatorRunner
 
 from app.database.models import User
+from app.database.repo.requests import RequestsRepo
 from app.bot.scenes.user import MainMenuUserScene
 from app.bot.scenes.register import RegisterCarScene
-from app.database.repo.requests import RequestsRepo
 
 
 class StartScene(
@@ -29,7 +29,7 @@ class StartScene(
             telegram_id=int(command.args)
         )
         if not employee:
-            return self.wizard.goto(MainMenuUserScene)
+            return await self.wizard.goto(MainMenuUserScene)
 
         visit = await repo.visits.get_current_visit(
             user_id=user.id, employee_id=employee.id
@@ -38,5 +38,7 @@ class StartScene(
             await repo.visits.create_visit(
                 user_id=user.id, employee_id=employee.id
             )
-        if not user.car:
-            await self.wizard.goto(RegisterCarScene)
+
+        await self.wizard.goto(
+            RegisterCarScene if not user.car else MainMenuUserScene
+        )

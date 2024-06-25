@@ -8,7 +8,7 @@ from app.core.logger import logger
 from app.core.config import settings
 from app.bot.main import bot, dispatcher
 from app.core.paths import STATIC_FOLDER
-from app.web.api.routers import main_router
+from app.web.api.routers import router
 
 
 @asynccontextmanager
@@ -39,8 +39,10 @@ def init_app() -> FastAPI:
         docs_url="/docs",
         openapi_url="/openapi.json",
     )
-    app.mount(path="/static", app=StaticFiles(directory=STATIC_FOLDER), name="static")
-    app.include_router(main_router)
+    app.mount(
+        path="/static", app=StaticFiles(directory=STATIC_FOLDER), name="static"
+    )
+    app.include_router(router)
 
     return app
 

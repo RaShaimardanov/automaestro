@@ -1,0 +1,6 @@
+{% extends "admin/base.html" %}
+{% block title %}Опрос {{ poll.name }}{% endblock title %}
+{% block name %}Опрос {{ poll.name }}{% endblock name %}
+{% block content %}
+{{ poll.description }}
+{% endblock content %}
