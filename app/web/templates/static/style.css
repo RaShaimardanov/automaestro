@@ -1,0 +1,11 @@
+.counter-container tbody {
+ counter-reset: number;
+ list-style-type: none;
+}
+.counter-container tr {
+ counter-increment: number;
+ content: counters(number, ".") " ";
+}
+.counter-container tr th::before {
+ content: counters(number, ".") " ";
+}

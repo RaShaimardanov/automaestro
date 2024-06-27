@@ -7,7 +7,7 @@ from fastapi.staticfiles import StaticFiles
 from app.core.logger import logger
 from app.core.config import settings
 from app.bot.main import bot, dispatcher
-from app.core.paths import STATIC_FOLDER
+from app.core.paths import STATIC_FOLDER, IMAGES_DIR
 from app.web.api.routers import router
 
 
@@ -22,7 +22,6 @@ async def lifespan(app: FastAPI):
     )
 
     yield
-
     await bot.delete_webhook(
         drop_pending_updates=settings.BOT_DROP_PENDING_UPDATES,
     )
@@ -39,8 +38,16 @@ def init_app() -> FastAPI:
         docs_url="/docs",
         openapi_url="/openapi.json",
     )
+    # app.add_middleware(HTTPSRedirectMiddleware)
     app.mount(
-        path="/static", app=StaticFiles(directory=STATIC_FOLDER), name="static"
+        path="/static",
+        app=StaticFiles(directory=STATIC_FOLDER),
+        name="static",
+    )
+    app.mount(
+        path="/images",
+        app=StaticFiles(directory=IMAGES_DIR),
+        name="images",
     )
     app.include_router(router)
 

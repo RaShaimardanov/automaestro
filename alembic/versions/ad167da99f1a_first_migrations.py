@@ -1,8 +1,8 @@
-"""Add models
+"""First migrations
 
-Revision ID: 690a1ced5164
+Revision ID: ad167da99f1a
 Revises: 
-Create Date: 2024-06-20 15:25:17.928843
+Create Date: 2024-06-26 16:12:49.233857
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
-revision: str = '690a1ced5164'
+revision: str = 'ad167da99f1a'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -63,7 +63,9 @@ def upgrade() -> None:
     op.create_table('questions',
     sa.Column('title', sa.String(), nullable=False),
     sa.Column('text', sa.Text(), nullable=False),
+    sa.Column('image_name', sa.String(), nullable=True),
     sa.Column('poll_id', sa.Integer(), nullable=False),
+    sa.Column('options_types', postgresql.ENUM('smile', 'score', 'custom', name='optionstype'), nullable=False),
     sa.Column('id', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['poll_id'], ['polls.id'], ),
     sa.PrimaryKeyConstraint('id')

@@ -2,14 +2,38 @@
 {% block title %}Главная{% endblock title %}
 {% block name %}Главная{% endblock name %}
 {% block content %}
-<h6><a href="{{ url_for('get_add_poll_template') }}">Добавить новый опрос</a></h6>
+<div class="d-grid gap-2">
+   <button hx-get="/admin/poll/add"
+           hx-trigger="click"
+           hx-target="#add-poll"
+           hx-swap="outerHTML"
+           class="btn btn-outline-primary btn-sm mb-auto">
+    Добавить новый опрос
+   </button>
+</div>
+<output id="add-poll" hx-swap-oob="true" class="visually-hidden">
+    {% include "admin/add-poll.html" %}
+</output>
 {% if polls %}
-     <ol class="list-group list-group-numbered">
-         {% for poll in polls %}
-            <li class="list-group-item">
-                <a href="{{ url_for('poll_detail', poll_id=poll.id) }}" class="link-underline-light fw-light">{{ poll.name }}</a>
-            </li>
-         {% endfor %}
-     </ol>
+<div class="container border rounded mt-3">
+   <table class="table caption-top">
+      <caption>Список опросов</caption>
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Название</th>
+        </tr>
+      </thead>
+      <tbody class="table-group-divider">
+      {% for poll in polls %}
+        <tr>
+          <th scope="row">{{ poll.id }}</th>
+          <td><a href="{{ url_for('poll_detail', poll_id=poll.id) }}" class="link-underline-light fw-light">{{ poll.name }}</a></td>
+        </tr>
+      {% endfor %}
+      </tbody>
+   </table>
+</div>
 {% endif %}
 {% endblock content %}
+
