@@ -2,9 +2,17 @@ from dataclasses import dataclass
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.database.models import Car, Visit, User, Employee, Poll
+from app.database.models import (
+    Car,
+    Visit,
+    User,
+    Employee,
+    Poll,
+    Question,
+    Option,
+)
 from app.database.repo.car import CarRepo
-from app.database.repo.poll import PollRepo
+from app.database.repo.poll import PollRepo, QuestionRepo, OptionRepo
 from app.database.repo.user import UserRepo
 from app.database.repo.visit import VisitRepo
 from app.database.repo.employee import EmployeeRepo
@@ -40,3 +48,11 @@ class RequestsRepo:
     @property
     def polls(self) -> PollRepo:
         return PollRepo(model=Poll, session=self.session)
+
+    @property
+    def questions(self) -> QuestionRepo:
+        return QuestionRepo(model=Question, session=self.session)
+
+    @property
+    def options(self) -> OptionRepo:
+        return OptionRepo(model=Option, session=self.session)

@@ -11,4 +11,6 @@ TEMPLATES_FOLDER = PurePath(WEB_APP_FOLDER / "templates/")
 STATIC_FOLDER = PurePath(TEMPLATES_FOLDER / "static/")
 
 RESOURCES_DIR = PurePath(ROOT_DIR / "resources")
+DATA_DIR = PurePath(RESOURCES_DIR / "data/")
+IMAGES_DIR = PurePath(DATA_DIR / "images/")
 LOCALES_DIR = PurePath(RESOURCES_DIR / "locales/")
