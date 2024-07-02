@@ -142,7 +142,7 @@ async def add_option(
     form_data = await request.form()
     title = form_data.get("title")
     try:
-        await repo.options.create(dict(title=title, question_id=question_id))
+        await repo.options.create(dict(value=title, question_id=question_id))
         question = await repo.questions.get(question_id)
         return templates.TemplateResponse(
             request=request,

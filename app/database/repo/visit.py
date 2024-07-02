@@ -1,6 +1,6 @@
 from typing import Optional
 
-from sqlalchemy import select
+from sqlalchemy import select, and_
 from sqlalchemy.dialects.postgresql import insert
 
 from app.database.models import Visit
@@ -20,13 +20,9 @@ class VisitRepo(BaseRepo):
         await self.session.commit()
         return result
 
-    async def get_current_visit(
-        self, user_id: int, employee_id: int
-    ) -> Optional[Visit]:
+    async def get_current_visit(self, user_id: int) -> Optional[Visit]:
         stmt = select(Visit).where(
-            user_id == Visit.user_id,
-            employee_id == Visit.employee_id,
-            OrderStatus.issued != Visit.status,
+            and_(user_id == Visit.user_id, OrderStatus.issued != Visit.status)
         )
         result = await self.session.scalar(stmt)
         return result

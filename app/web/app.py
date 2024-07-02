@@ -6,7 +6,7 @@ from fastapi.staticfiles import StaticFiles
 
 from app.core.logger import logger
 from app.core.config import settings
-from app.bot.main import bot, dispatcher
+from app.bot.main import bot, dp
 from app.core.paths import STATIC_FOLDER, IMAGES_DIR
 from app.web.api.routers import router
 
@@ -17,13 +17,11 @@ async def lifespan(app: FastAPI):
     logger.info("Приложение запущено.")
     await bot.set_webhook(
         url=f"{settings.WEBHOOK_URL}{settings.WEBHOOK_PATH}",
-        secret_token=settings.WEBHOOK_SECRET,
         drop_pending_updates=settings.BOT_DROP_PENDING_UPDATES,
     )
-
     yield
     await bot.delete_webhook(
-        drop_pending_updates=settings.BOT_DROP_PENDING_UPDATES,
+        drop_pending_updates=settings.BOT_DROP_PENDING_UPDATES
     )
     await bot.session.close()
     logger.info("Приложение остановлено.")
@@ -38,7 +36,6 @@ def init_app() -> FastAPI:
         docs_url="/docs",
         openapi_url="/openapi.json",
     )
-    # app.add_middleware(HTTPSRedirectMiddleware)
     app.mount(
         path="/static",
         app=StaticFiles(directory=STATIC_FOLDER),
@@ -61,7 +58,7 @@ app = init_app()
 async def bot_webhook(update: dict):
     """Функция для приёма сообщений из Telegram."""
     telegram_update = Update(**update)
-    response = await dispatcher.feed_update(bot=bot, update=telegram_update)
+    response = await dp.feed_update(bot=bot, update=telegram_update)
     logger.info(
         "Update id=%s is %s.",
         telegram_update.update_id,

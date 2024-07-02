@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from aiogram import Router
 from aiogram.types import (
     Message,
@@ -10,8 +12,6 @@ from aiogram.filters import Command
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from fluentogram import TranslatorRunner
 
-from app.bot.keyboards.inline.user import main_menu_user
-from app.database.models import User
 
 router = Router()
 

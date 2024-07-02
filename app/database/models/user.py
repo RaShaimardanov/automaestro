@@ -7,7 +7,7 @@ from app.database.models.mixins import UserMixin
 
 class User(UserMixin, Base):
     car: Mapped[Car] = relationship(
-        Car, backref="car", cascade="delete", lazy="selectin"
+        Car, back_populates="user", cascade="delete", lazy="selectin"
     )
 
 

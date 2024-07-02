@@ -26,6 +26,12 @@ class BaseRepo:
         )
         return db_obj.scalars().first()
 
+    async def get_by_attribute(self, **kwargs):
+        db_obj = await self.session.execute(
+            select(self.model).filter_by(**kwargs)
+        )
+        return db_obj.scalars().first()
+
     async def get_all(self):
         db_objs = await self.session.execute(select(self.model))
         return db_objs.scalars().all()

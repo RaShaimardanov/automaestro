@@ -10,9 +10,15 @@ from app.database.models import (
     Poll,
     Question,
     Option,
+    Answer,
 )
 from app.database.repo.car import CarRepo
-from app.database.repo.poll import PollRepo, QuestionRepo, OptionRepo
+from app.database.repo.poll import (
+    PollRepo,
+    QuestionRepo,
+    OptionRepo,
+    AnswerRepo,
+)
 from app.database.repo.user import UserRepo
 from app.database.repo.visit import VisitRepo
 from app.database.repo.employee import EmployeeRepo
@@ -56,3 +62,7 @@ class RequestsRepo:
     @property
     def options(self) -> OptionRepo:
         return OptionRepo(model=Option, session=self.session)
+
+    @property
+    def answers(self) -> AnswerRepo:
+        return AnswerRepo(model=Answer, session=self.session)

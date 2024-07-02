@@ -16,8 +16,10 @@ def create_dispatcher() -> Dispatcher:
     dp.update.outer_middleware(DatabaseMiddleware(async_session_pool))
     dp.update.outer_middleware(LangMiddleware())
     dp.include_router(admin_router)
+
     registry = SceneRegistry(dp)
     registry.add(*scenes_list)
+
     return dp
 
 
@@ -29,8 +31,9 @@ def init_bot() -> Bot:
             protect_content=settings.BOT_PROTECT_CONTENT,
         ),
     )
+
     return bot
 
 
-dispatcher: Dispatcher = create_dispatcher()
+dp: Dispatcher = create_dispatcher()
 bot: Bot = init_bot()

@@ -2,8 +2,8 @@ from typing import Optional
 
 from sqlalchemy import String, Text, ForeignKey
 from sqlalchemy.dialects.postgresql import ENUM
+from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy_file import ImageField
 
 from app.database.models import Base
 from app.utils.enums import OptionsType
@@ -30,13 +30,19 @@ class Question(Base):
         nullable=False,
         default=OptionsType.smile,
     )
-    options: Mapped[Optional[list["Option"]]] = relationship(
-        "Option", backref="options", uselist=True, lazy="selectin"
+    options_list: Mapped[Optional[list["Option"]]] = relationship(
+        "Option", backref="options_list", uselist=True, lazy="selectin"
     )
+
+    @hybrid_property
+    def options(self):
+        if self.options_type.value:
+            return [option for option in self.options_type.value]
+        return self.options_list
 
 
 class Option(Base):
-    title: Mapped[str] = mapped_column(String, nullable=False)
+    value: Mapped[str] = mapped_column(String, nullable=False)
     question_id: Mapped[int] = mapped_column(
         ForeignKey("questions.id"), nullable=False
     )
