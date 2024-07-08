@@ -1,3 +1,4 @@
+import asyncio
 from typing import Any
 
 from aiogram.fsm.scene import Scene, on
@@ -21,13 +22,15 @@ class PollScene(Scene, state="poll"):
         callback_query: CallbackQuery,
         user: User,
         repo: RequestsRepo,
-        context: Any,
+        context: str = None,
     ):
         """Отправляет пользователю описание опроса и кнопку для запуска опроса."""
-        poll = await repo.polls.get_by_attribute(slug=context)
-        await callback_query.message.edit_text(
-            text=poll.description, reply_markup=launch_poll_kb(poll_id=poll.id)
-        )
+        if context:
+            poll = await repo.polls.get_by_attribute(slug=context)
+            await callback_query.message.edit_text(
+                text=poll.description,
+                reply_markup=launch_poll_kb(poll_id=poll.id),
+            )
 
     @on.callback_query(PollCallback.filter())
     async def launch_poll(
@@ -93,6 +96,8 @@ class PollScene(Scene, state="poll"):
         """"""
         await callback_query.message.delete()
         await callback_query.message.answer(text=i18n.poll.scene.leave())
+        # pause
+        await asyncio.sleep(5)
         visit = await repo.visits.get_current_visit(user_id=user.id)
 
         if not visit:

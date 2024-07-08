@@ -26,3 +26,15 @@ class VisitRepo(BaseRepo):
         )
         result = await self.session.scalar(stmt)
         return result
+
+    async def get_current_visits_by_employee_id(
+        self, employee_id: int
+    ) -> Optional[list[Visit]]:
+        stmt = select(Visit).where(
+            and_(
+                employee_id == Visit.employee_id,
+                OrderStatus.issued != Visit.status,
+            )
+        )
+        result = await self.session.execute(stmt)
+        return result.scalars().all()

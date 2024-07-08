@@ -14,3 +14,6 @@ class Car(Base):
     user: Mapped["User"] = relationship(
         "User", back_populates="car", lazy="selectin"
     )
+
+    def __str__(self):
+        return self.license_plate_number

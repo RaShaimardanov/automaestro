@@ -1,5 +1,5 @@
 from sqlalchemy import Integer, ForeignKey, Text, Boolean
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.dialects.postgresql import ENUM, TIMESTAMP
 
 
@@ -24,4 +24,9 @@ class Visit(Base, TimestampMixin):
     )
     employee_id: Mapped[int] = mapped_column(
         ForeignKey("employees.id", ondelete="SET NULL")
+    )
+    user: Mapped["User"] = relationship(
+        "User",
+        backref="user",
+        lazy="selectin",
     )

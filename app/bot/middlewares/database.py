@@ -33,9 +33,13 @@ class DatabaseMiddleware(BaseMiddleware):
                 first_name=event_from_user.first_name,
                 last_name=event_from_user.last_name,
             )
+            employee = await repo.employees.get_employee(
+                telegram_id=user.telegram_id
+            )
 
             data["repo"] = repo
             data["user"] = user
+            data["employee"] = employee
 
             result = await handler(event, data)
         return result

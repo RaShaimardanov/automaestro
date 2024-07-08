@@ -12,5 +12,7 @@ STATIC_FOLDER = PurePath(TEMPLATES_FOLDER / "static/")
 
 RESOURCES_DIR = PurePath(ROOT_DIR / "resources")
 DATA_DIR = PurePath(RESOURCES_DIR / "data/")
+VOICES_DIR = PurePath(DATA_DIR / "voices/")
 IMAGES_DIR = PurePath(DATA_DIR / "images/")
+QRCODES_DIR = PurePath(IMAGES_DIR / "qrcodes/")
 LOCALES_DIR = PurePath(RESOURCES_DIR / "locales/")

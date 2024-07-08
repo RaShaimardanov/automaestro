@@ -7,14 +7,14 @@ from fluentogram import TranslatorRunner
 
 from app.core.logger import logger
 from app.database.models import User
-from app.bot.scenes.mixins import BackScene
+from app.bot.scenes.mixins import MenuScene
 from app.bot.keyboards.inline.user import back_kb
 from app.core.constants import LICENSE_PLATE_REGEX
 from app.database.repo.requests import RequestsRepo
 from app.bot.scenes.user.main import MainMenuUserScene
 
 
-class RegisterCarScene(BackScene, state="register_car"):
+class RegisterCarScene(MenuScene, state="register_car"):
     """Сцена для регистрации гос. номера автомобиля"""
 
     @on.message.enter()

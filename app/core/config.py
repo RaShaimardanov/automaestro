@@ -10,6 +10,7 @@ class TelegramBotSettings(BaseSettings):
     BOT_PARSE_MODE: str
     BOT_PROTECT_CONTENT: bool
     BOT_DROP_PENDING_UPDATES: bool
+    BOT_USERNAME: str
 
     WEBHOOK_URL: str
     WEBHOOK_PATH: str
@@ -27,16 +28,20 @@ class PostgresDBSettings(BaseSettings):
     POSTGRES_URI: Optional[str] = None
 
     @field_validator("POSTGRES_URI")
-    def assemble_db_connection(cls, v: Optional[str], values: ValidationInfo) -> str:
+    def assemble_db_connection(
+        cls, v: Optional[str], values: ValidationInfo
+    ) -> str:
         if isinstance(v, str):
             return v
         # Return URL-connect 'postgresql://postgres:password@localhost:5432/invoices'
-        return "postgresql+asyncpg://{user}:{password}@{host}:{port}/{db}".format(
-            user=values.data["POSTGRES_USER"],
-            password=values.data["POSTGRES_PASSWORD"],
-            host=values.data["POSTGRES_HOST"],
-            port=values.data["POSTGRES_PORT"],
-            db=values.data["POSTGRES_DB"],
+        return (
+            "postgresql+asyncpg://{user}:{password}@{host}:{port}/{db}".format(
+                user=values.data["POSTGRES_USER"],
+                password=values.data["POSTGRES_PASSWORD"],
+                host=values.data["POSTGRES_HOST"],
+                port=values.data["POSTGRES_PORT"],
+                db=values.data["POSTGRES_DB"],
+            )
         )
 
 

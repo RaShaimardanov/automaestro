@@ -47,7 +47,6 @@ class BaseRepo:
 
     async def update(self, obj, update_data: dict):
         obj_data = jsonable_encoder(obj)
-
         for field in obj_data:
             if field in update_data:
                 setattr(obj, field, update_data[field])

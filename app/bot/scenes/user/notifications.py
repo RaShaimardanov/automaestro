@@ -5,13 +5,13 @@ from fluentogram import TranslatorRunner
 
 from app.database.models import User
 from app.bot.utils.enums import MenuOptions
-from app.bot.scenes.mixins import BackScene
+from app.bot.scenes.mixins import MenuScene
 from app.database.repo.requests import RequestsRepo
 from app.bot.utils.callback_data import NotificationsCallback
 from app.bot.keyboards.inline.user import configuration_notifications
 
 
-class NotificationsScene(BackScene, state="notifications"):
+class NotificationsScene(MenuScene, state="notifications"):
     @on.callback_query.enter()
     async def on_enter(
         self,
@@ -36,6 +36,8 @@ class NotificationsScene(BackScene, state="notifications"):
         i18n: TranslatorRunner,
     ):
         visit = await repo.visits.get_current_visit(user_id=user.id)
+        # Принято, уведомим вас стандартным звонком, вы всегда можете изменить свое решение в настройках профиля
+        # принято, вам придет уведомление о готовности
         await repo.visits.update(
             visit, dict(notify_ready=callback_data.position)
         )

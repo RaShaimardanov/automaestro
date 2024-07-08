@@ -31,6 +31,36 @@ class MenuOptions(Enum):
         "app.bot.scenes.user.notifications",
         "NotificationsScene",
     )
+    VISIT_CARD = (
+        "Контакты мастера",
+        "app.bot.scenes.user.send_vcard",
+        "SendVCardScene",
+    )
+    MAIN_MENU_EMPLOYEE = (
+        "Главное меню",
+        "app.bot.scenes.employee.main",
+        "MainMenuEmployeeScene",
+    )
+    REGISTER_EMPLOYEE = (
+        "Начать",
+        "app.bot.scenes.employee.register",
+        "RegisterEmployeeScene",
+    )
+    WORK_SCENE = (
+        "Автомобили • В работе",
+        "app.bot.scenes.employee.work",
+        "WorkEmployeeScene",
+    )
+    WORK_DETAIL = (
+        "Автомобили • Информация",
+        "app.bot.scenes.employee.work",
+        "WorkDetailEmployeeScene",
+    )
+    PROFILE_EMPLOYEE = (
+        "Профиль",
+        "app.bot.scenes.employee.profile",
+        "ProfileEmployeeScene",
+    )
 
     def __init__(self, text, module_name, class_name):
         self._text = text
@@ -48,3 +78,15 @@ class MenuOptions(Enum):
         """Ленивая загрузка импортов и кэширование сцены."""
         module = importlib.import_module(self._module_name)
         return getattr(module, self._class_name)
+
+
+class EstimationsEnum(Enum):
+    def __init__(self, score, smile):
+        self.score = score
+        self.smile = smile
+
+    poor = ("1", "😞")
+    fair = ("2", "😕")
+    average = ("3", "😐")
+    good = ("4", "🙂")
+    excellent = ("5", "😊")

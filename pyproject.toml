@@ -19,6 +19,9 @@ pydantic-settings = "^2.3.3"
 asyncpg = "^0.29.0"
 python-multipart = "^0.0.9"
 pillow = "^10.3.0"
+qrcode = "^7.4.2"
+pydub = "^0.25.1"
+openai-whisper = "^20231117"
 
 
 [build-system]

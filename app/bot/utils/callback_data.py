@@ -8,12 +8,22 @@ class MenuActionCallback(CallbackData, prefix="action"):
     context: Optional[Any] = None
 
 
+class ChangeStatusCallback(CallbackData, prefix="status"):
+    visit_id: int
+    status: str
+
+
 class NotificationsCallback(CallbackData, prefix="position"):
     position: bool
 
 
 class PollCallback(CallbackData, prefix="poll"):
     poll_id: int
+
+
+class EstimationsCallback(CallbackData, prefix="estimation"):
+    visit_id: int
+    score: int
 
 
 class AnswerCallback(CallbackData, prefix="answer"):
