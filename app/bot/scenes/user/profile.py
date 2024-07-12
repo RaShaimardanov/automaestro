@@ -18,10 +18,12 @@ class ProfileScene(MenuScene, state="profile"):
         repo: RequestsRepo,
         i18n: TranslatorRunner,
     ):
+        visit = await repo.visits.get_last_visit_by_user_id(user_id=user.id)
         await callback_query.message.edit_text(
-            text=i18n.profile.menu.scene.enter(
+            text=i18n.user.profile.menu.scene(
                 user=callback_query.from_user.full_name,
                 license_plate_number=user.car.license_plate_number,
+                status=visit.status.name,
             ),
             reply_markup=profile_menu_kb(),
         )

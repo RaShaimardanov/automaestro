@@ -1,122 +1,102 @@
-import json
 from typing import Dict
 
-from aiogram.types import InlineKeyboardMarkup
-from aiogram.utils.keyboard import InlineKeyboardBuilder
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
+from app.bot.keyboards.inline.base import build_keyboard
 from app.bot.utils.enums import MenuOptions, EstimationsEnum
 from app.bot.utils.callback_data import (
     MenuActionCallback,
-    NotificationsCallback,
     EstimationsCallback,
+    NotificationsCallback,
 )
 
 
-def back_kb() -> InlineKeyboardBuilder:
-    builder = InlineKeyboardBuilder()
-    builder.button(
-        text="« Назад",
-        callback_data="back",
-    )
-    builder.adjust(1)
-    return builder
-
-
 def main_menu_user_kb(context: Dict[str, str]) -> InlineKeyboardMarkup:
-    builder = InlineKeyboardBuilder()
-    for scene, data in context.items():
-        if data:
-            builder.button(
-                text=MenuOptions[scene].text,
-                callback_data=MenuActionCallback(
-                    action=MenuOptions[scene].name,
-                    context=data,
-                ),
-            )
-    builder.adjust(1)
-    return builder.as_markup()
+    buttons = [
+        InlineKeyboardButton(
+            text=MenuOptions[scene].text,
+            callback_data=MenuActionCallback(
+                action=MenuOptions[scene].name,
+                context=data,
+            ).pack(),
+        )
+        for scene, data in context.items()
+        if data
+    ]
+    return build_keyboard(buttons)
 
 
 def profile_menu_kb() -> InlineKeyboardMarkup:
-    builder = InlineKeyboardBuilder()
-    builder.button(
-        text=MenuOptions.REGISTER.text,
-        callback_data=MenuActionCallback(action=MenuOptions.REGISTER.name),
-    )
-    builder.button(
-        text=MenuOptions.NOTIFICATIONS.text,
-        callback_data=MenuActionCallback(
-            action=MenuOptions.NOTIFICATIONS.name
+    buttons = [
+        InlineKeyboardButton(
+            text=MenuOptions.REGISTER.text,
+            callback_data=MenuActionCallback(
+                action=MenuOptions.REGISTER.name
+            ).pack(),
         ),
-    )
-    builder.attach(back_kb())
-    builder.adjust(1)
-    return builder.as_markup()
+        InlineKeyboardButton(
+            text=MenuOptions.NOTIFICATIONS.text,
+            callback_data=MenuActionCallback(
+                action=MenuOptions.NOTIFICATIONS.name
+            ).pack(),
+        ),
+    ]
+    return build_keyboard(buttons, include_back=True)
 
 
-def configuration_notifications(
+def notifications_setting_kb(
+    visit_id: int,
     position: bool = False,
 ) -> InlineKeyboardMarkup:
-    builder = InlineKeyboardBuilder()
-    if not position:
-        builder.button(
+    buttons = [
+        InlineKeyboardButton(
+            text="Не уведомлять" if position else "Уведомить о готовности",
+            callback_data=NotificationsCallback(
+                position=not position, visit_id=visit_id
+            ).pack(),
+        )
+    ]
+    return build_keyboard(buttons, include_back=True)
+
+
+def notifications_receive_kb(visit_id: int) -> InlineKeyboardMarkup:
+    buttons = [
+        InlineKeyboardButton(
             text="Уведомить о готовности",
-            callback_data=NotificationsCallback(position=True),
-        )
-    else:
-        builder.button(
+            callback_data=NotificationsCallback(
+                position=True, visit_id=visit_id
+            ).pack(),
+        ),
+        InlineKeyboardButton(
             text="Не уведомлять",
-            callback_data=NotificationsCallback(position=False),
-        )
-    builder.attach(back_kb())
-    builder.adjust(1)
-    return builder.as_markup()
-
-
-def offer_receive_notifications() -> InlineKeyboardMarkup:
-    builder = InlineKeyboardBuilder()
-    builder.button(
-        text="Уведомить о готовности",
-        callback_data=NotificationsCallback(position=True),
-    )
-    builder.button(
-        text="Не уведомлять",
-        callback_data=NotificationsCallback(position=False),
-    )
-    builder.adjust(1)
-    return builder.as_markup()
-
-
-def notifications_settings_kb() -> InlineKeyboardMarkup:
-    builder = InlineKeyboardBuilder()
-    builder.button(
-        text="Уведомить о готовности",
-        callback_data=NotificationsCallback(position=True),
-    )
-    builder.button(
-        text="Не уведомлять",
-        callback_data=NotificationsCallback(position=False),
-    )
-    builder.adjust(1)
-    return builder.as_markup()
+            callback_data=NotificationsCallback(
+                position=False, visit_id=visit_id
+            ).pack(),
+        ),
+    ]
+    return build_keyboard(buttons)
 
 
 def csat_kb(visit_id: int):
-    builder = InlineKeyboardBuilder()
-    for estimation in EstimationsEnum:
-        builder.button(
+    buttons = [
+        InlineKeyboardButton(
             text=estimation.smile,
             callback_data=EstimationsCallback(
                 score=estimation.score, visit_id=visit_id
-            ),
+            ).pack(),
         )
-    return builder.as_markup()
+        for estimation in EstimationsEnum
+    ]
+    return build_keyboard(buttons, width=len(EstimationsEnum))
 
 
 def accept_kb() -> InlineKeyboardMarkup:
-    builder = InlineKeyboardBuilder()
-    builder.button(
-        text="Принято!",
-        callback_data=MenuActionCallback(action=MenuOptions.MAIN_MENU.name),
-    )
-    return builder.as_markup()
+    buttons = [
+        InlineKeyboardButton(
+            text="Принято!",
+            callback_data=MenuActionCallback(
+                action=MenuOptions.MAIN_MENU_USER.name
+            ).pack(),
+        )
+    ]
+    return build_keyboard(buttons)

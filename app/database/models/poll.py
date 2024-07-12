@@ -47,6 +47,9 @@ class Option(Base):
         ForeignKey("questions.id"), nullable=False
     )
 
+    def __str__(self):
+        return self.value
+
 
 class Answer(Base):
     option: Mapped[str] = mapped_column(String, nullable=False)

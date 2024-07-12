@@ -15,6 +15,7 @@ class ChangeStatusCallback(CallbackData, prefix="status"):
 
 class NotificationsCallback(CallbackData, prefix="position"):
     position: bool
+    visit_id: int
 
 
 class PollCallback(CallbackData, prefix="poll"):

@@ -1,18 +1,18 @@
 import asyncio
-from typing import Any
+import os
 
 from aiogram.fsm.scene import Scene, on
 from aiogram.types import CallbackQuery, FSInputFile
 from fluentogram import TranslatorRunner
 
-
+from app.bot.keyboards.inline.user import notifications_receive_kb
+from app.bot.keyboards.inline.poll import launch_poll_kb, get_options_kb
+from app.bot.utils.callback_data import PollCallback, AnswerCallback
+from app.bot.utils.enums import MenuOptions
 from app.core.logger import logger
 from app.core.paths import IMAGES_DIR
 from app.database.models import User, Question
 from app.database.repo.requests import RequestsRepo
-from app.bot.utils.callback_data import PollCallback, AnswerCallback
-from app.bot.keyboards.inline.user import offer_receive_notifications
-from app.bot.keyboards.inline.poll import launch_poll_kb, get_options_kb
 
 
 class PollScene(Scene, state="poll"):
@@ -20,7 +20,6 @@ class PollScene(Scene, state="poll"):
     async def callback_query_enter_poll(
         self,
         callback_query: CallbackQuery,
-        user: User,
         repo: RequestsRepo,
         context: str = None,
     ):
@@ -31,6 +30,8 @@ class PollScene(Scene, state="poll"):
                 text=poll.description,
                 reply_markup=launch_poll_kb(poll_id=poll.id),
             )
+            return
+        await self.wizard.goto(MenuOptions.MAIN_MENU_USER.scene)
 
     @on.callback_query(PollCallback.filter())
     async def launch_poll(
@@ -49,7 +50,7 @@ class PollScene(Scene, state="poll"):
                 callback_query=callback_query, question=question
             )
             return
-        await self.wizard.exit()
+        await self.wizard.goto(MenuOptions.MAIN_MENU_USER.scene)
 
     @on.callback_query(AnswerCallback.filter())
     async def save_answer(
@@ -64,6 +65,7 @@ class PollScene(Scene, state="poll"):
         Проверяет наличие следующего вопроса в базе данных, если следующий вопрос существует, отправляет его пользователю.
         """
         try:
+            # сохраняем пришедший ответ
             await repo.answers.create(
                 data=dict(
                     option=callback_data.option,
@@ -75,10 +77,13 @@ class PollScene(Scene, state="poll"):
             logger.error(
                 f"Error saving answer: {callback_data}. Exception: {e}"
             )
+
+        # запрашиваем новый вопрос
         question = await repo.questions.get_next_unanswered_question(
             user_id=user.id, poll_id=callback_data.poll_id
         )
         if question:
+            # если вопрос есть, вызываем функцию отправки
             await self._send_question(
                 callback_query=callback_query, question=question
             )
@@ -93,11 +98,17 @@ class PollScene(Scene, state="poll"):
         repo: RequestsRepo,
         i18n: TranslatorRunner,
     ):
-        """"""
-        await callback_query.message.delete()
+        """
+        Выход из сцены при окончании опроса.
+        Предлагает получить уведомление о готовности при наличии открытого визита,
+        иначе завершает диалог.
+        """
+
         await callback_query.message.answer(text=i18n.poll.scene.leave())
-        # pause
-        await asyncio.sleep(5)
+        await callback_query.message.delete()
+
+        await asyncio.sleep(3)  # pause
+
         visit = await repo.visits.get_current_visit(user_id=user.id)
 
         if not visit:
@@ -105,27 +116,32 @@ class PollScene(Scene, state="poll"):
 
         await callback_query.message.answer(
             text=i18n.offer.receive.notifications(),
-            reply_markup=offer_receive_notifications(),
+            reply_markup=notifications_receive_kb(visit_id=visit.id),
         )
 
     @staticmethod
     async def _send_question(
         callback_query: CallbackQuery, question: Question
     ):
+        """Функция отправки вопроса"""
         try:
             await callback_query.message.delete()
-            if not question.image_name:
+            if os.path.isfile(IMAGES_DIR / question.image_name):
+                # отправляем сообщение с изображением, если оно существует
+                await callback_query.message.answer_photo(
+                    photo=FSInputFile(IMAGES_DIR / question.image_name),
+                    caption=question.text,
+                    reply_markup=get_options_kb(question=question),
+                )
+
+            else:
+                # иначе, текстовое сообщение
                 await callback_query.message.answer(
                     text=question.text,
                     reply_markup=get_options_kb(question=question),
                 )
-                return
-            await callback_query.message.answer_photo(
-                photo=FSInputFile(IMAGES_DIR / question.image_name),
-                caption=question.text,
-                reply_markup=get_options_kb(question=question),
-            )
+
         except Exception as e:
             logger.error(
-                f"Error while sending question: {question}. Exception: {e}"
+                f"Error while sending question: {question.id}. Exception: {e}"
             )

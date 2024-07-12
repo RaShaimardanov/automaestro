@@ -22,6 +22,8 @@ pillow = "^10.3.0"
 qrcode = "^7.4.2"
 pydub = "^0.25.1"
 openai-whisper = "^20231117"
+celery = "^5.4.0"
+redis = "^5.0.7"
 
 
 [build-system]

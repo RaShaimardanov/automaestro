@@ -30,15 +30,15 @@ class SendVCardScene(MenuScene, state="visit_card"):
                 phone_number=employee.phone_number,
                 email=employee.email,
             )
-            message = await callback_query.message.answer_contact(
+            await callback_query.message.answer_contact(
                 phone_number=f"{employee.phone_number}",
                 first_name=f"{employee.first_name}",
                 last_name=f"{employee.last_name}",
                 vcard=vcard,
             )
+
             await callback_query.message.delete()
-            await self.wizard.goto(
-                MenuOptions.MAIN_MENU.scene, message=message
-            )
+            await self.wizard.back()
+
         except Exception as e:
             logger.error(f"Error send vcard: {e}")

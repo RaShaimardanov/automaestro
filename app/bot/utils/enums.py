@@ -4,22 +4,22 @@ from functools import lru_cache
 
 
 class MenuOptions(Enum):
-    """Класс для опций меню."""
 
-    MAIN_MENU = (
+    # Пункты меню пользователя
+    MAIN_MENU_USER = (
         "Главное меню",
-        "app.bot.scenes.user.main",
+        "app.bot.scenes.user.main_menu",
         "MainMenuUserScene",
+    )
+    PROFILE_USER = (
+        "Профиль",
+        "app.bot.scenes.user.profile",
+        "ProfileScene",
     )
     POLL = (
         "Пройти опрос",
         "app.bot.scenes.poll",
         "PollScene",
-    )
-    PROFILE = (
-        "Профиль",
-        "app.bot.scenes.user.profile",
-        "ProfileScene",
     )
     REGISTER = (
         "Изменить данные автомобиля",
@@ -36,9 +36,11 @@ class MenuOptions(Enum):
         "app.bot.scenes.user.send_vcard",
         "SendVCardScene",
     )
+
+    # Пункты меню сотрудника
     MAIN_MENU_EMPLOYEE = (
         "Главное меню",
-        "app.bot.scenes.employee.main",
+        "app.bot.scenes.employee.main_menu",
         "MainMenuEmployeeScene",
     )
     REGISTER_EMPLOYEE = (
@@ -47,7 +49,7 @@ class MenuOptions(Enum):
         "RegisterEmployeeScene",
     )
     WORK_SCENE = (
-        "Автомобили • В работе",
+        "Автомобили",
         "app.bot.scenes.employee.work",
         "WorkEmployeeScene",
     )
@@ -81,6 +83,8 @@ class MenuOptions(Enum):
 
 
 class EstimationsEnum(Enum):
+    """Перечисление возможных оценок"""
+
     def __init__(self, score, smile):
         self.score = score
         self.smile = smile

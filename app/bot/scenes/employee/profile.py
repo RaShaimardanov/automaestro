@@ -1,8 +1,8 @@
-from typing import Optional
+import os
 
 from aiogram import F
-from aiogram.fsm.scene import on
-from aiogram.types import CallbackQuery, FSInputFile, Message
+from aiogram.fsm.scene import on, After
+from aiogram.types import CallbackQuery, FSInputFile
 from fluentogram import TranslatorRunner
 
 from app.bot.keyboards.inline.employee import profile_menu_kb
@@ -31,23 +31,29 @@ class ProfileEmployeeScene(MenuScene, state="profile_employee"):
             reply_markup=profile_menu_kb(),
         )
 
-    @on.callback_query(F.data == "qrcode")
+    @on.callback_query(
+        F.data == "qrcode",
+        after=After.goto(MenuOptions.MAIN_MENU_EMPLOYEE.scene),
+    )
     async def send_qrcode(
         self,
         callback_query: CallbackQuery,
         employee: Employee,
         i18n: TranslatorRunner,
     ):
+        """Функция отправки сообщения с QR-кодом"""
         try:
-            message = await callback_query.message.answer_photo(
-                photo=FSInputFile(QRCODES_DIR / f"{employee.telegram_id}.jpg"),
-                caption=i18n.employee.profile.scene.qrcode(),
-                protect_content=False,
-            )
+            if os.path.isfile(QRCODES_DIR / f"{employee.telegram_id}.jpg"):
+                # отправляем сообщение с изображением, если оно существует
+                await callback_query.message.answer_photo(
+                    photo=FSInputFile(
+                        QRCODES_DIR / f"{employee.telegram_id}.jpg"
+                    ),
+                    caption=i18n.employee.profile.scene.qrcode(),
+                    protect_content=False,
+                )
             await callback_query.message.delete()
-            await self.wizard.goto(
-                MenuOptions.MAIN_MENU_EMPLOYEE.scene, message=message
-            )
+
         except Exception as e:
             logger.error(
                 f"Error send QR-code: {employee.telegram_id} - {str(e)}"

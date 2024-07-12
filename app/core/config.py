@@ -51,7 +51,26 @@ class ServerSettings(BaseSettings):
     SERVER_RELOAD: bool = True
 
 
-settings = [TelegramBotSettings, ServerSettings, PostgresDBSettings]
+class RedisSettings(BaseSettings):
+    REDIS_HOST: str
+    REDIS_PORT: int
+    REDIS_URL: Optional[str] = None
+
+    @field_validator("REDIS_URL")
+    def get_redis_url(cls, v: Optional[str], values: ValidationInfo) -> str:
+
+        return "redis://{host}:{port}".format(
+            host=values.data["REDIS_HOST"],
+            port=values.data["REDIS_PORT"],
+        )
+
+
+settings = [
+    TelegramBotSettings,
+    ServerSettings,
+    PostgresDBSettings,
+    RedisSettings,
+]
 
 
 class AppSettings(*settings):

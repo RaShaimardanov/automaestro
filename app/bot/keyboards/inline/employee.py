@@ -1,89 +1,95 @@
-from aiogram.types import InlineKeyboardMarkup
-from aiogram.utils.keyboard import InlineKeyboardBuilder
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
-from app.bot.keyboards.inline.user import back_kb
+from app.utils.enums import OrderStatus
+from app.bot.utils.enums import MenuOptions
+from app.bot.keyboards.inline.base import build_keyboard
 from app.bot.utils.callback_data import (
     MenuActionCallback,
     ChangeStatusCallback,
 )
-from app.bot.utils.enums import MenuOptions
-from app.utils.enums import OrderStatus
 
 
-def main_menu_employee_kb() -> InlineKeyboardMarkup:
-    builder = InlineKeyboardBuilder()
-    builder.button(
-        text=MenuOptions.WORK_SCENE.text,
-        callback_data=MenuActionCallback(action=MenuOptions.WORK_SCENE.name),
-    )
-    builder.button(
-        text=MenuOptions.PROFILE_EMPLOYEE.text,
-        callback_data=MenuActionCallback(
-            action=MenuOptions.PROFILE_EMPLOYEE.name
+def main_menu_employee_kb(visits) -> InlineKeyboardMarkup:
+    buttons = []
+    if visits:
+        buttons.append(
+            InlineKeyboardButton(
+                text=MenuOptions.WORK_SCENE.text,
+                callback_data=MenuActionCallback(
+                    action=MenuOptions.WORK_SCENE.name
+                ).pack(),
+            )
+        )
+    buttons.append(
+        InlineKeyboardButton(
+            text=MenuOptions.PROFILE_EMPLOYEE.text,
+            callback_data=MenuActionCallback(
+                action=MenuOptions.PROFILE_EMPLOYEE.name
+            ).pack(),
         ),
     )
-    builder.adjust(1)
-    return builder.as_markup()
+    return build_keyboard(buttons)
 
 
 def register_menu_kb() -> InlineKeyboardMarkup:
-    builder = InlineKeyboardBuilder()
-    builder.button(
-        text=MenuOptions.REGISTER_EMPLOYEE.text,
-        callback_data=MenuActionCallback(
-            action=MenuOptions.REGISTER_EMPLOYEE.name
-        ),
-    )
-    return builder.as_markup()
+    buttons = [
+        InlineKeyboardButton(
+            text=MenuOptions.REGISTER_EMPLOYEE.text,
+            callback_data=MenuActionCallback(
+                action=MenuOptions.REGISTER_EMPLOYEE.name
+            ).pack(),
+        )
+    ]
+    return build_keyboard(buttons)
 
 
 def profile_menu_kb() -> InlineKeyboardMarkup:
-    builder = InlineKeyboardBuilder()
-    builder.button(
-        text="Обновить контактные данные",
-        callback_data=MenuActionCallback(
-            action=MenuOptions.REGISTER_EMPLOYEE.name
+    buttons = [
+        InlineKeyboardButton(
+            text="Обновить контактные данные",
+            callback_data=MenuActionCallback(
+                action=MenuOptions.REGISTER_EMPLOYEE.name
+            ).pack(),
         ),
-    )
-    builder.button(
-        text="Получить QR-code",
-        callback_data="qrcode",
-    )
-    builder.attach(back_kb())
-    builder.adjust(1)
-    return builder.as_markup()
+        InlineKeyboardButton(
+            text="Получить QR-code",
+            callback_data="qrcode",
+        ),
+    ]
+    return build_keyboard(buttons, include_back=True)
 
 
 def work_menu_kb(visits) -> InlineKeyboardMarkup:
-    builder = InlineKeyboardBuilder()
-    for visit in visits:
-        builder.button(
+    buttons = [
+        InlineKeyboardButton(
             text=f"{visit.user.car.license_plate_number} • {visit.status.value}",
             callback_data=MenuActionCallback(
                 action=MenuOptions.WORK_DETAIL.name, context=visit.id
-            ),
+            ).pack(),
         )
-    builder.attach(back_kb())
-    builder.adjust(1)
-    return builder.as_markup()
+        for visit in visits
+    ]
+    return build_keyboard(buttons, include_back=True)
 
 
 def work_detail_menu_kb(visit) -> InlineKeyboardMarkup:
-    builder = InlineKeyboardBuilder()
+    buttons = []
     if visit.status == OrderStatus.service:
         smile = "🔔" if visit.notify_ready else "🔕"
-        builder.button(
-            text=f"{smile} Автомобиль готов",
-            callback_data=ChangeStatusCallback(
-                visit_id=visit.id, status=OrderStatus.ready.name
-            ),
+        buttons.append(
+            InlineKeyboardButton(
+                text=f"{smile} Автомобиль готов",
+                callback_data=ChangeStatusCallback(
+                    visit_id=visit.id, status=OrderStatus.ready.name
+                ).pack(),
+            )
         )
-    builder.button(
-        text="✅ Автомобиль выдан",
-        callback_data=ChangeStatusCallback(
-            visit_id=visit.id, status=OrderStatus.issued.name
-        ),
+    buttons.append(
+        InlineKeyboardButton(
+            text="✅ Автомобиль выдан",
+            callback_data=ChangeStatusCallback(
+                visit_id=visit.id, status=OrderStatus.issued.name
+            ).pack(),
+        )
     )
-    builder.attach(back_kb())
-    builder.adjust(1)
-    return builder.as_markup()
+    return build_keyboard(buttons, include_back=True)

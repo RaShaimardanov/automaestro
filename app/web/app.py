@@ -4,9 +4,10 @@ from aiogram.types import Update
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
+from app.bot.bot import bot
 from app.core.logger import logger
 from app.core.config import settings
-from app.bot.main import bot, dp
+from app.bot.main import dp
 from app.core.paths import STATIC_FOLDER, IMAGES_DIR
 from app.web.api.routers import router
 

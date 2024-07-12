@@ -9,11 +9,7 @@ from app.database.models import User
 
 class BaseRepo:
     """
-    A class representing a base repository for handling database operations.
-
-    Attributes:
-        session (AsyncSession): The database session used by the repository.
-
+    Класс, реализующий функциональность репозитория для выполнения операций с базой данных.
     """
 
     def __init__(self, model, session):

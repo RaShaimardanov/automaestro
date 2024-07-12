@@ -1,17 +1,17 @@
 from typing import Optional
 
 from aiogram import F
-from aiogram.fsm.scene import on
+from aiogram.fsm.scene import on, After
 from aiogram.types import Message, CallbackQuery
 from fluentogram import TranslatorRunner
 
+from app.bot.keyboards.inline.base import back_kb
+from app.bot.scenes.mixins import MenuScene
+from app.bot.utils.enums import MenuOptions
+from app.core.constants import LICENSE_PLATE_REGEX
 from app.core.logger import logger
 from app.database.models import User
-from app.bot.scenes.mixins import MenuScene
-from app.bot.keyboards.inline.user import back_kb
-from app.core.constants import LICENSE_PLATE_REGEX
 from app.database.repo.requests import RequestsRepo
-from app.bot.scenes.user.main import MainMenuUserScene
 
 
 class RegisterCarScene(MenuScene, state="register_car"):
@@ -39,7 +39,10 @@ class RegisterCarScene(MenuScene, state="register_car"):
         )
         await self.wizard.update_data(previous_message=callback_query.message)
 
-    @on.message(F.text.upper().regexp(LICENSE_PLATE_REGEX))
+    @on.message(
+        F.text.upper().regexp(LICENSE_PLATE_REGEX),
+        after=After.goto(MenuOptions.MAIN_MENU_USER.scene),
+    )
     async def input_license_plate_number(
         self,
         message: Message,
@@ -90,13 +93,12 @@ class RegisterCarScene(MenuScene, state="register_car"):
             await message.answer(
                 text=i18n.input.license.plate.number.success()
             )
-            await self.wizard.goto(MainMenuUserScene)
 
         except Exception as e:
             logger.error(f"Error when saving car data: {e}")
 
     @on.message()
-    async def input_skip(self, message: Message, i18n: TranslatorRunner):
+    async def input_invalid(self, message: Message, i18n: TranslatorRunner):
         """Обрабатывает некорректный ввод и перезапускает сцену."""
         await message.answer(text=i18n.input.data.invalid())
         await self.wizard.retake()
