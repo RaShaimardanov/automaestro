@@ -2,9 +2,8 @@ from aiogram.fsm.scene import on
 from aiogram.types import CallbackQuery
 from fluentogram import TranslatorRunner
 
-from app.core.logger import logger
-from app.bot.utils.enums import MenuOptions
 from app.bot.scenes.mixins import MenuScene
+from app.core.logger import logger
 from app.database.models import Employee
 from app.database.repo.requests import RequestsRepo
 
@@ -37,7 +36,6 @@ class SendVCardScene(MenuScene, state="visit_card"):
                 vcard=vcard,
             )
 
-            await callback_query.message.delete()
             await self.wizard.back()
 
         except Exception as e:

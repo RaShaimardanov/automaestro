@@ -3,13 +3,16 @@
       <form action="/admin/poll/{{ poll.id }}/question" method="post" enctype="multipart/form-data" class="needs-validation">
         <div class="row g-3">
             <label class="form-label">
-                <input  id="title" name="title" type="text" placeholder="Название" class="form-control">
+                <input  id="title" name="title" type="text" placeholder="Название" class="form-control" required>
             </label>
             <label class="form-label">
-                <textarea id="text" name="text" placeholder="Описание" class="form-control"  rows="3" required></textarea>
+                <textarea id="description" name="description" placeholder="Описание" class="form-control"  rows="3" required></textarea>
+            </label>
+            <label class="form-label">
+                <input id="text_ask" name="text_ask" placeholder="Вопрос" class="form-control" required>
             </label>
             <label class="form-label" for="file-upload">
-                <input  id="file-upload" name="image" type="file" class="form-control" placeholder="Файл">
+                <input  id="file-upload" name="image" type="file" class="form-control" placeholder="Изображение">
             </label>
              <div class="input-group mb-3">
                  <label class="input-group-text" for="options_type">Варианты ответов</label>

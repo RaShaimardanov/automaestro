@@ -10,6 +10,7 @@ from app.web.api.validators import check_file_format
 
 
 async def save_image(image: UploadFile) -> str:
+    """Функция сохранения изображения"""
     try:
         _, ext = os.path.splitext(image.filename)
         check_file_format(image.content_type)

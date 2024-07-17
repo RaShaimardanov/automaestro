@@ -3,7 +3,7 @@
 {% block name %}Главная{% endblock name %}
 {% block content %}
 <div class="d-grid gap-2">
-   <button hx-get="/admin/poll/add"
+   <button hx-get="/admin/poll"
            hx-trigger="click"
            hx-target="#add-poll"
            hx-swap="outerHTML"
@@ -24,10 +24,10 @@
           <th scope="col">Название</th>
         </tr>
       </thead>
-      <tbody class="table-group-divider">
+      <tbody class="counter-container table-group-divider">
       {% for poll in polls %}
-        <tr>
-          <th scope="row">{{ poll.id }}</th>
+        <tr class="number">
+          <th scope="row"></th>
           <td><a href="{{ url_for('poll_detail', poll_id=poll.id) }}" class="link-underline-light fw-light">{{ poll.name }}</a></td>
         </tr>
       {% endfor %}

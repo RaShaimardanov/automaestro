@@ -52,7 +52,7 @@ class ProfileEmployeeScene(MenuScene, state="profile_employee"):
                     caption=i18n.employee.profile.scene.qrcode(),
                     protect_content=False,
                 )
-            await callback_query.message.delete()
+                await callback_query.message.delete()
 
         except Exception as e:
             logger.error(

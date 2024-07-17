@@ -10,6 +10,7 @@ from app.bot.scenes.mixins import MenuScene
 from app.core.logger import logger
 from app.database.models import User
 from app.database.repo.requests import RequestsRepo
+from app.utils.enums import PollType
 
 
 class MainMenuUserScene(MenuScene, state="main_menu_user"):
@@ -22,7 +23,6 @@ class MainMenuUserScene(MenuScene, state="main_menu_user"):
         user: User,
         repo: RequestsRepo,
         i18n: TranslatorRunner,
-        **kwargs,
     ):
         context = await self._create_context(user, repo)
         text = await self._generate_text(context, i18n)
@@ -58,8 +58,9 @@ class MainMenuUserScene(MenuScene, state="main_menu_user"):
                 await self.wizard.update_data(message=message)
 
         except TelegramBadRequest as e:
-            # если предыдущее сообщение было удалено
-            if "message to edit not found" in str(e):
+            # если предыдущее сообщение невозможно изменить
+            if "message is not modified" in str(e):
+                await callback_query.message.delete()
                 message = await callback_query.bot.send_message(
                     chat_id=user.telegram_id,
                     text=text,
@@ -77,8 +78,8 @@ class MainMenuUserScene(MenuScene, state="main_menu_user"):
         user: User,
         repo: RequestsRepo,
     ) -> Dict[str, str]:
-        poll = await repo.polls.get_polls_with_unanswered_questions(
-            user_id=user.id
+        poll = await repo.polls.get_next_poll(
+            user_id=user.id, poll_type=PollType.client
         )
         visit = await repo.visits.get_current_visit(user_id=user.id)
         return {
@@ -91,8 +92,4 @@ class MainMenuUserScene(MenuScene, state="main_menu_user"):
     async def _generate_text(context, i18n):
         poll = context.get("POLL")
         visit = context.get("VISIT_CARD")
-
         return i18n.user.main.menu.scene(poll=bool(poll), visit=bool(visit))
-        # return i18n.user.main.menu.scene().format(
-        #     poll_text if poll else "", visit_text if visit else ""
-        # )

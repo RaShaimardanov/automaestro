@@ -25,3 +25,8 @@ class OptionsType(Enum):
     smile = OptionsSmileEnum
     score = OptionsScoreEnum
     custom = None
+
+
+class PollType(Enum):
+    client = "Опрос клиентов"
+    employee = "Опрос сотрудников"

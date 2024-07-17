@@ -6,10 +6,10 @@ from app.core.config import settings
 
 def init_bot() -> Bot:
     bot = Bot(
-        token=settings.BOT_TOKEN,
+        token=settings.TELEGRAM.BOT_TOKEN,
         default=DefaultBotProperties(
-            parse_mode=settings.BOT_PARSE_MODE,
-            protect_content=settings.BOT_PROTECT_CONTENT,
+            parse_mode=settings.TELEGRAM.BOT_PARSE_MODE,
+            protect_content=settings.TELEGRAM.BOT_PROTECT_CONTENT,
         ),
     )
 

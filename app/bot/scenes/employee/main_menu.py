@@ -34,10 +34,11 @@ class MainMenuEmployeeScene(MenuScene, state="main_menu_employee"):
             visits = await repo.visits.get_current_visits_by_employee_id(
                 employee_id=employee.id
             )
-            await message.answer(
+            message = await message.answer(
                 text=i18n.employee.main.menu(total=len(visits)),
                 reply_markup=kb.main_menu_employee_kb(visits),
             )
+            await self.wizard.update_data(message=message)
         except Exception as e:
             logger.error(f"Error menu message {employee.telegram_id}: {e}")
 
@@ -62,12 +63,11 @@ class MainMenuEmployeeScene(MenuScene, state="main_menu_employee"):
         except TelegramBadRequest as e:
             # если предыдущее сообщение было удалено
             if "message to edit not found" in str(e):
-                message = await callback_query.bot.send_message(
+                await callback_query.bot.send_message(
                     chat_id=employee.telegram_id,
                     text=i18n.employee.main.menu(total=len(visits)),
                     reply_markup=kb.main_menu_employee_kb(visits),
                 )
-                await self.wizard.update_data(message=message)
             else:
                 logger.error(f"Error menu message {employee.telegram_id}: {e}")
 

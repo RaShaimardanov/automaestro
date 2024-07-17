@@ -14,9 +14,7 @@ from app.core.paths import QRCODES_DIR
 async def generate_qrcode(parameter: int):
     """Генерация QR-кода на основе параметра - telegram_id."""
     try:
-        deep_link = (
-            f"tg://resolve?domain={settings.BOT_USERNAME}&start={parameter}"
-        )
+        deep_link = f"tg://resolve?domain={settings.TELEGRAM.BOT_USERNAME}&start={parameter}"
 
         qr: QRCode = QRCode(version=2, error_correction=ERROR_CORRECT_H)
 

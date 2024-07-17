@@ -20,6 +20,7 @@ class NotificationsCallback(CallbackData, prefix="position"):
 
 class PollCallback(CallbackData, prefix="poll"):
     poll_id: int
+    questions_quantity: int
 
 
 class EstimationsCallback(CallbackData, prefix="estimation"):
@@ -31,3 +32,5 @@ class AnswerCallback(CallbackData, prefix="answer"):
     option: str
     poll_id: int
     question_id: int
+    questions_quantity: int
+    question_number: int

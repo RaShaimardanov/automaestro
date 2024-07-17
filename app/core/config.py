@@ -1,11 +1,16 @@
-from typing import Optional
+from functools import lru_cache
+from typing import Optional, List, Set
 
-from pydantic import field_validator
+from pydantic import field_validator, Field
 from pydantic_core.core_schema import ValidationInfo
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
-class TelegramBotSettings(BaseSettings):
+class BaseConfig(BaseSettings):
+    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
+
+
+class TelegramBotSettings(BaseConfig):
     BOT_TOKEN: str
     BOT_PARSE_MODE: str
     BOT_PROTECT_CONTENT: bool
@@ -17,7 +22,7 @@ class TelegramBotSettings(BaseSettings):
     WEBHOOK_SECRET: str
 
 
-class PostgresDBSettings(BaseSettings):
+class PostgresDBSettings(BaseConfig):
     POSTGRES_USER: str
     POSTGRES_PASSWORD: str
     POSTGRES_HOST: str
@@ -45,13 +50,13 @@ class PostgresDBSettings(BaseSettings):
         )
 
 
-class ServerSettings(BaseSettings):
+class ServerSettings(BaseConfig):
     SERVER_HOST: str
     SERVER_PORT: int
     SERVER_RELOAD: bool = True
 
 
-class RedisSettings(BaseSettings):
+class RedisSettings(BaseConfig):
     REDIS_HOST: str
     REDIS_PORT: int
     REDIS_URL: Optional[str] = None
@@ -65,20 +70,23 @@ class RedisSettings(BaseSettings):
         )
 
 
-settings = [
-    TelegramBotSettings,
-    ServerSettings,
-    PostgresDBSettings,
-    RedisSettings,
-]
-
-
-class AppSettings(*settings):
+class AppSettings(BaseConfig):
     PROJECT_NAME: str
+    WEB_APP_URL: str
     API_PREFIX: str
+    TESTING: bool = True
     DEBUG: str
+    ADMINS_IDS: list[int]
 
-    model_config = SettingsConfigDict(env_file=".env")
+    TELEGRAM: TelegramBotSettings = Field(default_factory=TelegramBotSettings)
+    POSTGRES: PostgresDBSettings = Field(default_factory=PostgresDBSettings)
+    SERVER: ServerSettings = Field(default_factory=ServerSettings)
+    REDIS: RedisSettings = Field(default_factory=RedisSettings)
 
 
-settings = AppSettings()
+@lru_cache()
+def get_settings():
+    return AppSettings()
+
+
+settings = get_settings()

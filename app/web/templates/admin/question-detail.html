@@ -2,7 +2,7 @@
 {% block title %}Вопрос {{ question.title }}{% endblock title %}
 {% block name %}{{  question.title }}{% endblock name %}
 {% block content %}
-<div class="card mb-3" style="">
+<div class="card mb-3">
   <div class="row g-0">
     {% if question.image_name %}
     <div class="col-md-4">
@@ -12,12 +12,10 @@
     <div class="col-md-8">
       <div class="card-body">
         <h5 class="card-title">{{ question.title }}</h5>
-        <p class="card-text">{{ question.text }}</p>
+        <p class="card-text">{{ question.description }}</p>
+          <p class="card-text">{{ question.text_ask }}</p>
         {% if question.options %}
-<!--          <p class="card-text"><small class="text-body-secondary">{{ question.options }}</small></p>-->
-
             {% include "admin/options.html" %}
-
         {% endif %}
         <div class="d-grid gap-2">
             <button hx-get="{{ question.id }}/options" hx-trigger="click" hx-target="#options-add" hx-swap="outerHTML" class="btn btn-outline-primary btn-sm my-3 w">
@@ -27,6 +25,16 @@
         <output id="options-add" hx-swap-oob="true" class="visually-hidden">
             {% include "admin/add-option.html" %}
         </output>
+        <div class=" d-grid gap-2 d-md-block">
+            <div class="row">
+               <div class="col">
+                 <button type="button" class="btn btn-outline-primary btn-sm col-12">Редактировать</button>
+               </div>
+                <div class="col">
+                      <button hx-delete="{{ question.id }}" hx-push-url="true" hx-target="body" hx-confirm="Вы точно хотите вопрос?" type="button" class="btn btn-outline-danger btn-sm col-12">Удалить</button>
+                </div>
+            </div>
+        </div>
       </div>
     </div>
   </div>

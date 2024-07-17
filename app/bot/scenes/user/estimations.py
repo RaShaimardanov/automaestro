@@ -33,9 +33,10 @@ class EstimationsScene(Scene, state="estimations"):
     async def input_comment(
         self,
         message: Message,
+        user: User,
         repo: RequestsRepo,
     ):
-        await self._set_comment(text=message.text, repo=repo)
+        await self._set_comment(text=message.text, repo=repo, user_id=user.id)
 
     @on.message(F.voice.as_("voice"))
     async def input_voice(
@@ -49,7 +50,7 @@ class EstimationsScene(Scene, state="estimations"):
         text = await transcribe_voice(
             bot=message.bot, voice=voice, user_id=user.id
         )
-        await self._set_comment(text=text, repo=repo)
+        await self._set_comment(text=text, repo=repo, user_id=user.id)
 
     @on.message.exit()
     async def scene_exit(
@@ -64,13 +65,18 @@ class EstimationsScene(Scene, state="estimations"):
     async def _set_comment(
         self,
         text: str,
+        user_id: int,
         repo: RequestsRepo,
     ):
         data = await self.wizard.get_data()
         visit_id = data.get("visit_id")
+        visit = await repo.visits.get(visit_id)
 
         if message := data.get("message"):
             await message.delete()
 
-        if visit := await repo.visits.get(int(visit_id)):
-            await repo.visits.update(visit, update_data={"comment": text})
+        if not visit:
+            visit = await repo.visits.get_last_visit_by_user_id(
+                user_id=user_id
+            )
+        await repo.visits.update(visit, update_data={"comment": text})

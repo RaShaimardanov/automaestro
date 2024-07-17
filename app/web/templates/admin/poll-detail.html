@@ -2,10 +2,30 @@
 {% block title %}Опрос {{ poll.name }}{% endblock title %}
 {% block name %}{{ poll.name }}{% endblock name %}
 {% block content %}
-<div class="card">
-  <div class="card-body">
-    {{ poll.description }}
-  </div>
+<div class="card mb-3">
+  <div class="row g-0">
+      {% if poll.image_name %}
+         <div class="col-md-4">
+            <img src="{{ url_for('images', path=poll.image_name) }}" class="img-fluid rounded-start" alt="{{ poll.title }}">
+         </div>
+      {% endif %}
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 class="card-title">{{ poll.name }}</h5>
+          <p class="card-text">{{ poll.description }}</p>
+      </div>
+        </div>
+    </div>
+</div>
+<div class=" d-grid gap-2 d-md-block">
+    <div class="row">
+        <div class="col">
+            <button type="button" class="btn btn-outline-primary btn-sm col-12">Редактировать</button>
+        </div>
+        <div class="col">
+            <button hx-delete="{{ poll.id }}" hx-push-url="true" hx-target="body" hx-confirm="Вы точно хотите опрос?" type="button" class="btn btn-outline-danger btn-sm col-12">Удалить</button>
+        </div>
+    </div>
 </div>
 <div class="d-grid gap-2">
     <button hx-get="/admin/poll/{{ poll.id }}/question"
