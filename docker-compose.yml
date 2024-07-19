@@ -1,0 +1,38 @@
+volumes:
+  pg_data:
+  redis_data:
+  static:
+
+services:
+  db:
+    image: postgres:latest
+    env_file: .prod.env
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    env_file: .prod.env
+    command: python -m app
+    volumes:
+      - static:/automaestro/app/resources/data/
+    depends_on:
+      - db
+    ports:
+      - 8000:8000
+
+  worker:
+    build: .
+    env_file: .prod.env
+    command: celery -A app.services.tasks.messages.celery_app worker --loglevel=info --concurrency=1
+    depends_on:
+        - app
+        - redis
+
+  redis:
+    restart: unless-stopped
+    image: redis:7.0.5-alpine
+    volumes:
+      - redis_data:/data
+    expose:
+      - 6379

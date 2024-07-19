@@ -79,7 +79,7 @@ class MainMenuUserScene(MenuScene, state="main_menu_user"):
         repo: RequestsRepo,
     ) -> Dict[str, str]:
         poll = await repo.polls.get_next_poll(
-            user_id=user.id, poll_type=PollType.client
+            user_id=user.id, poll_type=PollType.CLIENT
         )
         visit = await repo.visits.get_current_visit(user_id=user.id)
         return {

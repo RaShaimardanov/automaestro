@@ -89,8 +89,8 @@ class EstimationsEnum(Enum):
         self.score = score
         self.smile = smile
 
-    poor = ("1", "😞")
-    fair = ("2", "😕")
-    average = ("3", "😐")
-    good = ("4", "🙂")
-    excellent = ("5", "😊")
+    POOR = ("1", "😞")
+    FAIR = ("2", "😕")
+    AVERAGE = ("3", "😐")
+    GOOD = ("4", "🙂")
+    EXCELLENT = ("5", "😊")

@@ -12,7 +12,7 @@ class Visit(Base, TimestampMixin):
     status: Mapped[ENUM] = mapped_column(
         ENUM(OrderStatus),
         nullable=False,
-        default=OrderStatus.service,
+        default=OrderStatus.SERVICE,
     )
     close_date = mapped_column(TIMESTAMP, nullable=True)
     csat: Mapped[int] = mapped_column(Integer, nullable=True)

@@ -1,12 +1,13 @@
+{% extends "admin/base.html" %}
 {% block content %}
 <div class="container border rounded mt-3 py-4">
-      <form action="/admin/poll" method="post" enctype="multipart/form-data" class="needs-validation">
+      <form hx-put="/admin/poll/{{ poll.id }}" enctype="multipart/form-data" class="needs-validation">
         <div class="row g-3">
             <label class="form-label">
-                <input  id="name" name="name" type="text" placeholder="Название" class="form-control" required>
+                <input  id="name" name="name" type="text" placeholder="Название" class="form-control" value="{{ poll.name }}" required>
             </label>
             <label class="form-label">
-                <textarea id="description" name="description" placeholder="Описание" class="form-control"  rows="4" required></textarea>
+                <textarea id="description" name="description" placeholder="Описание" class="form-control"  rows="6"  required>{{ poll.description }}</textarea>
             </label>
              <div class="input-group mb-3">
                  <label class="input-group-text" for="poll_type">Тип опроса</label>
@@ -21,8 +22,9 @@
             <label class="form-label">
                 <input  id="slug" name="slug" type="text" placeholder="Ссылка" class="form-control" required>
             </label>
-            <button type="submit" class="btn btn-sm btn-primary">Добавить</button>
+            <button type="submit" class="btn btn-sm btn-primary">Сохранить</button>
         </div>
       </form>
 </div>
+
 {% endblock content %}

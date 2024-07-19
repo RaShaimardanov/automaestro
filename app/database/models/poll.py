@@ -16,7 +16,7 @@ class Poll(Base):
     poll_type: Mapped[ENUM] = mapped_column(
         ENUM(PollType),
         nullable=False,
-        default=PollType.client,
+        default=PollType.CLIENT,
     )
     slug: Mapped[str] = mapped_column(String, nullable=False, unique=True)
     questions: Mapped[list["Question"]] = relationship(
@@ -35,7 +35,7 @@ class Question(Base):
     options_type: Mapped[ENUM] = mapped_column(
         ENUM(OptionsType),
         nullable=False,
-        default=OptionsType.smile,
+        default=OptionsType.SMILE,
     )
     options_list: Mapped[Optional[list["Option"]]] = relationship(
         "Option",

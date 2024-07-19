@@ -39,6 +39,6 @@ def get_options_kb(
                 questions_quantity=questions_quantity,
             ),
         )
-    if question.options_type == OptionsType.custom:
+    if question.options_type == OptionsType.CUSTOM:
         builder.adjust(1)
     return builder.as_markup()

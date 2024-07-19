@@ -2,31 +2,31 @@ from enum import Enum
 
 
 class OrderStatus(Enum):
-    service = "В работе"
-    ready = "Готов"
-    issued = "Выдан"
+    SERVICE = "В работе"
+    READY = "Готов"
+    ISSUED = "Выдан"
 
 
 class OptionsSmileEnum(Enum):
-    confuse = "👎"
-    pristine = "😐"
-    confirm = "👍"
+    CONFUSE = "👎"
+    NEUTRAL = "😐"
+    CONFIRM = "👍"
 
 
 class OptionsScoreEnum(Enum):
-    poor = "1"
-    fair = "2"
-    average = "3"
-    good = "4"
-    excellent = "5"
+    POOR = "1"
+    FAIR = "2"
+    AVERAGE = "3"
+    GOOD = "4"
+    EXCELLENT = "5"
 
 
 class OptionsType(Enum):
-    smile = OptionsSmileEnum
-    score = OptionsScoreEnum
-    custom = None
+    SMILE = OptionsSmileEnum
+    SCORE = OptionsScoreEnum
+    CUSTOM = None
 
 
 class PollType(Enum):
-    client = "Опрос клиентов"
-    employee = "Опрос сотрудников"
+    CLIENT = "Опрос клиентов"
+    EMPLOYEE = "Опрос сотрудников"

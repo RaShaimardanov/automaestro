@@ -8,5 +8,6 @@ if __name__ == "__main__":
         app=app,
         host=settings.SERVER.SERVER_HOST,
         port=settings.SERVER.SERVER_PORT,
+        forwarded_allow_ips=["*"],
         log_level="info",
     )

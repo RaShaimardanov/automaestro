@@ -12,9 +12,11 @@
 <body>
 <script>
     let tg = window.Telegram.WebApp;
-    let user_telegram_id = tg.initDataUnsafe.user.id;
-    tg.expand();
-    document.cookie = "telegram_id=" + user_telegram_id + "; max-age=2592000; path=/";
+    if(tg !== undefined){
+        let user_telegram_id = tg.initDataUnsafe.user.id
+        tg.expand();
+        document.cookie = "telegram_id=" + user_telegram_id + "; max-age=2592000; path=/";
+    }
 </script>
   <div class="container col-md-7 col-lg-8">
       <div class="hstack gap-2 my-3">

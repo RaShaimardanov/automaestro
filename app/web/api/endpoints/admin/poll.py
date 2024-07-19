@@ -70,12 +70,24 @@ async def poll_detail(
     poll_id: int,
     repo: RequestsRepo = Depends(get_repo),
 ):
-    print(request.headers)
-    print(request.query_params)
     poll = await repo.polls.get(poll_id)
     return templates.TemplateResponse(
         request=request,
         name="admin/poll-detail.html",
+        context={"poll": poll},
+    )
+
+
+@router.get(path="/{poll_id}/update", response_class=HTMLResponse)
+async def poll_update(
+    request: Request,
+    poll_id: int,
+    repo: RequestsRepo = Depends(get_repo),
+):
+    poll = await repo.polls.get(poll_id)
+    return templates.TemplateResponse(
+        request=request,
+        name="admin/poll/update.html",
         context={"poll": poll},
     )
 
@@ -144,7 +156,7 @@ async def add_question(
     question = await repo.questions.create(question_dict)
 
     redirect_url = f"/admin/poll/{poll_id}"
-    if question.options_type == OptionsType.custom:
+    if question.options_type == OptionsType.CUSTOM:
         redirect_url = f"/admin/poll/{poll_id}/question/{question.id}"
 
     return RedirectResponse(

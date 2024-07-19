@@ -74,13 +74,13 @@ def work_menu_kb(visits) -> InlineKeyboardMarkup:
 
 def work_detail_menu_kb(visit) -> InlineKeyboardMarkup:
     buttons = []
-    if visit.status == OrderStatus.service:
+    if visit.status == OrderStatus.SERVICE:
         smile = "🔔" if visit.notify_ready else "🔕"
         buttons.append(
             InlineKeyboardButton(
                 text=f"{smile} Автомобиль готов",
                 callback_data=ChangeStatusCallback(
-                    visit_id=visit.id, status=OrderStatus.ready.name
+                    visit_id=visit.id, status=OrderStatus.READY.name
                 ).pack(),
             )
         )
@@ -88,7 +88,7 @@ def work_detail_menu_kb(visit) -> InlineKeyboardMarkup:
         InlineKeyboardButton(
             text="✅ Автомобиль выдан",
             callback_data=ChangeStatusCallback(
-                visit_id=visit.id, status=OrderStatus.issued.name
+                visit_id=visit.id, status=OrderStatus.ISSUED.name
             ).pack(),
         )
     )

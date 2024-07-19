@@ -78,7 +78,7 @@ class WorkDetailEmployeeScene(MenuScene, state="work_detail_employee"):
         )
 
         if visit.notify_ready and (
-            callback_data.status == OrderStatus.ready.name
+            callback_data.status == OrderStatus.READY.name
         ):  # если автомобиль готов и у клиента включены уведомления
             text = i18n.car.ready.notify(
                 license_plate_number=visit.user.car.license_plate_number
@@ -93,7 +93,7 @@ class WorkDetailEmployeeScene(MenuScene, state="work_detail_employee"):
                 show_alert=True,
             )
 
-        elif callback_data.status == OrderStatus.issued.name:
+        elif callback_data.status == OrderStatus.ISSUED.name:
             # если автомобиль выдан клиенту
             await repo.visits.update(
                 visit,

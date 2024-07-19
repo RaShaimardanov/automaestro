@@ -10,22 +10,16 @@ class TelegramIDCheckingMiddleware(BaseHTTPMiddleware):
 
     async def dispatch(self, request: Request, call_next):
         """
-        Мидлварь для проверки наличия telegram_id в куках реквеста.
-        Проверяет принадлежность telegram_id к списку ADMINS_IDS
+        Middleware для проверки наличия telegram_id в куках запроса.
+        Проверяет принадлежность telegram_id к списку ADMINS_IDS.
         """
-
         if request.url.path in self.EXCLUSIONS:
             return await call_next(request)
 
-        if (
-            request.url.path not in self.EXCLUSIONS
-            and "telegram_id" not in request.cookies
-        ):
-            return RedirectResponse("/")
+        telegram_id = request.cookies.get("telegram_id")
 
-        if request.cookies.get("telegram_id") not in settings.ADMINS_IDS:
-            return RedirectResponse("/")
+        if request.url.path.startswith("/admin") and telegram_id:
+            if int(telegram_id) in settings.ADMINS_IDS:
+                return await call_next(request)
 
-        response = await call_next(request)
-
-        return response
+        return RedirectResponse("/")

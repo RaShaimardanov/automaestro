@@ -31,7 +31,7 @@ class VisitRepo(BaseRepo):
 
     async def get_current_visit(self, user_id: int) -> Optional[Visit]:
         stmt = select(Visit).where(
-            and_(user_id == Visit.user_id, OrderStatus.issued != Visit.status)
+            and_(user_id == Visit.user_id, OrderStatus.ISSUED != Visit.status)
         )
         result = await self.session.scalar(stmt)
         return result
@@ -44,7 +44,7 @@ class VisitRepo(BaseRepo):
             .where(
                 and_(
                     employee_id == Visit.employee_id,
-                    OrderStatus.issued != Visit.status,
+                    OrderStatus.ISSUED != Visit.status,
                 )
             )
             .order_by(Visit.created_at)
