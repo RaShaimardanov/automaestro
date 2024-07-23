@@ -12,6 +12,9 @@ class OptionsSmileEnum(Enum):
     NEUTRAL = "😐"
     CONFIRM = "👍"
 
+    def __str__(self):
+        return f"Смайлы 👎 😐 👍"
+
 
 class OptionsScoreEnum(Enum):
     POOR = "1"
@@ -19,6 +22,9 @@ class OptionsScoreEnum(Enum):
     AVERAGE = "3"
     GOOD = "4"
     EXCELLENT = "5"
+
+    def __str__(self):
+        return f"Оценка 1-5"
 
 
 class OptionsType(Enum):

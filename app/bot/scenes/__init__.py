@@ -17,14 +17,15 @@ from app.bot.scenes.employee.main_menu import MainMenuEmployeeScene
 from app.bot.scenes.employee.profile import ProfileEmployeeScene
 from app.bot.scenes.employee.register import RegisterEmployeeScene
 
-start_router = StartScene.as_router(name=__name__)
+user_router = MainMenuUserScene.as_router(name=__name__)
 employee_router = MainMenuEmployeeScene.as_router(name=__name__)
 
+user_router.message.register(MainMenuUserScene.as_handler(), Command("menu"))
 employee_router.message.register(
     MainMenuEmployeeScene.as_handler(), Command("master")
 )
 
-router_list = [employee_router]
+router_list = [user_router, employee_router]
 scenes_list = [
     StartScene,
     PollScene,

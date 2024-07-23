@@ -12,7 +12,7 @@ from app.bot.keyboards.inline.employee import work_menu_kb, work_detail_menu_kb
 from app.database.models import Employee
 from app.database.repo.requests import RequestsRepo
 from app.utils.enums import OrderStatus
-from app.services.tasks.messages import sending_message
+from app.services.tasks.messages import send_message_task
 
 
 class WorkEmployeeScene(MenuScene, state="work_employee"):
@@ -86,7 +86,7 @@ class WorkDetailEmployeeScene(MenuScene, state="work_detail_employee"):
             reply_markup_data = accept_kb().model_dump()
 
             await self._clear_user_message(user_storage_key)
-            sending_message.delay(text, user_telegram_id, reply_markup_data)
+            send_message_task.delay(text, user_telegram_id, reply_markup_data)
 
             await callback_query.answer(
                 text=i18n.employee.send.notifications(),
@@ -108,7 +108,7 @@ class WorkDetailEmployeeScene(MenuScene, state="work_detail_employee"):
             reply_markup_data = csat_kb(visit_id=visit.id).model_dump()
 
             await self._clear_user_message(user_storage_key)
-            sending_message.delay(text, user_telegram_id, reply_markup_data)
+            send_message_task.delay(text, user_telegram_id, reply_markup_data)
 
             await callback_query.answer(
                 text=i18n.employee.send.invate.rate.work(),

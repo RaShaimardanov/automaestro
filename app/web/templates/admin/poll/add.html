@@ -1,5 +1,9 @@
-{% block content %}
-<div class="container border rounded mt-3 py-4">
+<div class="d-grid gap-2">
+   <button onclick="showhide(AddPoll)" class="btn btn-outline-primary btn-sm mb-auto">
+       Добавить новый опрос
+   </button>
+</div>
+<div id="AddPoll" class="container border rounded mt-3 py-4" style="display: none">
       <form action="/admin/poll" method="post" enctype="multipart/form-data" class="needs-validation">
         <div class="row g-3">
             <label class="form-label">
@@ -10,7 +14,7 @@
             </label>
              <div class="input-group mb-3">
                  <label class="input-group-text" for="poll_type">Тип опроса</label>
-                 <select class="form-select" id="poll_type" name="poll_type">
+                 <select class="form-select form-control-sm" id="poll_type" name="poll_type">
                    <option value="CLIENT" selected>Опрос клиентов</option>
                    <option value="EMPLOYEE">Опрос сотрудников</option>
                  </select>
@@ -21,8 +25,9 @@
             <label class="form-label">
                 <input  id="slug" name="slug" type="text" placeholder="Ссылка" class="form-control" required>
             </label>
-            <button type="submit" class="btn btn-sm btn-primary">Добавить</button>
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-sm btn-primary">Добавить</button>
+            </div>
         </div>
       </form>
 </div>
-{% endblock content %}

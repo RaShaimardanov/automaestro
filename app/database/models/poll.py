@@ -20,7 +20,11 @@ class Poll(Base):
     )
     slug: Mapped[str] = mapped_column(String, nullable=False, unique=True)
     questions: Mapped[list["Question"]] = relationship(
-        "Question", backref="questions", cascade="delete", lazy="selectin"
+        "Question",
+        backref="questions",
+        cascade="delete",
+        lazy="selectin",
+        order_by="Question.id",
     )
 
 
@@ -48,7 +52,7 @@ class Question(Base):
     @hybrid_property
     def options(self):
         if self.options_type.value:
-            return [option.value for option in self.options_type.value]
+            return [option for option in self.options_type.value]
         return self.options_list
 
 

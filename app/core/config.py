@@ -38,7 +38,7 @@ class PostgresDBSettings(BaseConfig):
     ) -> str:
         if isinstance(v, str):
             return v
-        # Return URL-connect 'postgresql://postgres:password@localhost:5432/invoices'
+        # Return URL-connect 'postgresql://postgres:password@localhost:5432/postgres'
         return (
             "postgresql+asyncpg://{user}:{password}@{host}:{port}/{db}".format(
                 user=values.data["POSTGRES_USER"],

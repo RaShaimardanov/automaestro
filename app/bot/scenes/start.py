@@ -1,15 +1,17 @@
+import asyncio
+
 from aiogram import F
 from aiogram.fsm.storage.base import StorageKey
-from aiogram.types import Message, FSInputFile
+from aiogram.types import Message, Voice
 from aiogram.fsm.scene import Scene, on
 from aiogram.filters import CommandStart, CommandObject
 from fluentogram import TranslatorRunner
 
-from app.bot.keyboards.inline.poll import get_options_kb
 from app.bot.utils.enums import MenuOptions
-from app.core.paths import IMAGES_DIR
 from app.database.models import User
 from app.database.repo.requests import RequestsRepo
+from app.bot.keyboards.inline.employee import main_menu_employee_kb
+from app.services.tasks.messages import send_message_task
 
 
 class StartScene(
@@ -36,6 +38,29 @@ class StartScene(
                 await repo.visits.create_visit(
                     user_id=user.id, employee_id=employee.id
                 )
+                user_storage_key = StorageKey(
+                    bot_id=message.bot.id,
+                    chat_id=employee.telegram_id,
+                    user_id=employee.telegram_id,
+                )
+                data = await self.wizard.state.storage.get_data(
+                    key=user_storage_key
+                )
+
+                visits = await repo.visits.get_current_visits_by_employee_id(
+                    employee_id=employee.id
+                )
+                reply_markup_data = main_menu_employee_kb(visits).model_dump()
+                text = i18n.employee.main.menu(total=len(visits))
+                send_message_task.delay(
+                    text, employee.telegram_id, reply_markup_data
+                )
+                prev_message = data.get("message")
+                if prev_message:
+                    await prev_message.delete()
+                    await self.wizard.state.storage.set_data(
+                        key=user_storage_key, data={}
+                    )
 
         await message.answer(text=i18n.cmd.start.show(user=user.first_name))
         await self.wizard.goto(

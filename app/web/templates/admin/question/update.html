@@ -1,0 +1,52 @@
+{% extends "admin/base.html" %}
+{% block content %}
+<div class="container border rounded mb-3 py-4">
+    <form hx-patch="/admin/poll/{{ question.poll_id }}/question/{{ question.id }}" hx-push-url="true" hx-target="body"
+          enctype="multipart/form-data" class="needs-validation">
+        <div class="row g-3">
+            <label class="form-label">
+                <input  id="title" name="title" type="text" placeholder="Название" class="form-control" value="{{ question.title }}" required>
+            </label>
+            <label class="form-label">
+                <textarea id="description" name="description" placeholder="Описание" class="form-control" rows="6" required>
+                    {{ question.description }}
+                </textarea>
+            </label>
+            <label class="form-label">
+                <input id="text_ask" name="text_ask" placeholder="Вопрос" class="form-control" value="{{ question.text_ask }}" required>
+            </label>
+            <label class="form-label" for="file-upload">
+                <input  id="file-upload" name="image" type="file" class="form-control" placeholder="Изображение">
+            </label>
+             <div class="input-group">
+                 <label class="input-group-text" for="options_type">Варианты ответов</label>
+                 <select class="form-select" id="options_type" name="options_type">
+                   <option value="{{ question.options_type.name }}" selected>Выберите...</option>
+                   <option value="SMILE">Смайлы 👎 😐 👍</option>
+                   <option value="SCORE">Оценка 1-5</option>
+                   <option value="CUSTOM">Свои варианты</option>
+                 </select>
+             </div>
+            {% if not question.options_type.value %}
+              {% if question.options %}
+                    <small class="text-body-secondary">Варианты ответов</small>
+                    {% for option in question.options %}
+                      <div class="input-group">
+                        <input class="form-control" type="text" id="option_{{ option.id }}" name="option_{{ option.id }}"
+                               placeholder="Вариант ответа" aria-label="Вариант ответа" value="{{ option.value }}">
+                        <button class="btn btn btn-outline-danger" type="button" hx-delete="{{ option.id }}" hx-confirm="Удалить вариант ответа?">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                             <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                           </svg>
+                        </button>
+                      </div>
+                    {% endfor %}
+              {% endif %}
+            {% endif %}
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-sm btn-primary">Сохранить</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock content %}

@@ -29,7 +29,9 @@ class BaseRepo:
         return db_obj.scalars().first()
 
     async def get_all(self):
-        db_objs = await self.session.execute(select(self.model))
+        db_objs = await self.session.execute(
+            select(self.model).order_by(self.model.id)
+        )
         return db_objs.scalars().all()
 
     async def create(self, data: dict, user: Optional[User] = None):

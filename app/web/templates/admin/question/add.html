@@ -1,6 +1,10 @@
-{% block content %}
-<div class="container border rounded mt-3 py-4">
-      <form action="/admin/poll/{{ poll.id }}/question" method="post" enctype="multipart/form-data" class="needs-validation">
+<div class="d-grid gap-2">
+    <button onclick="showhide(AddQuestion)" class="btn btn-outline-primary btn-sm my-3 w">
+         Добавить новый вопрос
+    </button>
+</div>
+<div id="AddQuestion" hx-swap-oob="true" class="container border rounded mb-3 py-4" style="display: none">
+    <form action="/admin/poll/{{ poll.id }}/question" method="post" enctype="multipart/form-data" class="needs-validation">
         <div class="row g-3">
             <label class="form-label">
                 <input  id="title" name="title" type="text" placeholder="Название" class="form-control" required>
@@ -23,8 +27,9 @@
                    <option value="CUSTOM">Свои варианты</option>
                  </select>
              </div>
-            <button type="submit" class="btn btn-sm btn-primary">Добавить</button>
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-sm btn-primary">Добавить</button>
+            </div>
         </div>
-      </form>
+    </form>
 </div>
-{% endblock content %}

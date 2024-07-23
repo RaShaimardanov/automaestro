@@ -1,25 +1,30 @@
+import asyncio
+
 from aiogram import F
 from aiogram.fsm.scene import Scene, on, After
 from aiogram.types import CallbackQuery, Message, Voice
+from celery.result import AsyncResult
 from fluentogram import TranslatorRunner
 
 from app.database.models import User
 from app.database.repo.requests import RequestsRepo
-from app.utils.speech_to_text import transcribe_voice
+from app.services.tasks.messages import transcribe_voice_task
 from app.bot.utils.callback_data import EstimationsCallback
+from app.utils.speech_to_text import download_and_convert_voice
 
 
 class EstimationsScene(Scene, state="estimations"):
+    """Сцена оценки визита и сохранения коментария к визиту"""
 
     @on.callback_query(EstimationsCallback.filter())
     async def estimation_callback(
         self,
         callback_query: CallbackQuery,
         callback_data: EstimationsCallback,
-        user: User,
         repo: RequestsRepo,
         i18n: TranslatorRunner,
     ):
+        """Принимает callback_query с оценкой и сохраняет сохрает данные в визит"""
         message = await callback_query.message.edit_text(
             text=i18n.accept.estimation()
         )
@@ -36,6 +41,7 @@ class EstimationsScene(Scene, state="estimations"):
         user: User,
         repo: RequestsRepo,
     ):
+        """Принимает текстовое сообщение и сохраняет в поле комментария визита"""
         await self._set_comment(text=message.text, repo=repo, user_id=user.id)
 
     @on.message(F.voice.as_("voice"))
@@ -46,20 +52,36 @@ class EstimationsScene(Scene, state="estimations"):
         repo: RequestsRepo,
         voice: Voice,
     ):
+        """Принимает голосовое сообщение, переводит его в текст и сохраняет в поле комментария визита"""
         await self.wizard.exit()
-        text = await transcribe_voice(
-            bot=message.bot, voice=voice, user_id=user.id
+
+        # сохраняем голосовое и получаем путь
+        voice_path = await download_and_convert_voice(
+            voice_file_id=voice.file_id, user_id=user.id
         )
-        await self._set_comment(text=text, repo=repo, user_id=user.id)
+
+        # запускаем задачу перевода голосового сообщения в текст
+        task = transcribe_voice_task.delay(voice_path=voice_path)
+        result = AsyncResult(task.id)
+
+        # ожидаем завершения задачи
+        while not result.ready():
+            await asyncio.sleep(1)
+
+        transcribed_text = result.result
+
+        # сохраняем результат
+        await self._set_comment(
+            text=transcribed_text, repo=repo, user_id=user.id
+        )
 
     @on.message.exit()
     async def scene_exit(
         self,
         message: Message,
-        user: User,
-        repo: RequestsRepo,
         i18n: TranslatorRunner,
     ):
+        """Отправляет последнее сообщение"""
         await message.answer(text=i18n.visit.end())
 
     async def _set_comment(
@@ -68,6 +90,7 @@ class EstimationsScene(Scene, state="estimations"):
         user_id: int,
         repo: RequestsRepo,
     ):
+        """Функция сохранения текста сообщения"""
         data = await self.wizard.get_data()
         visit_id = data.get("visit_id")
         visit = await repo.visits.get(visit_id)

@@ -19,6 +19,11 @@ async def main_page_admin(
     repo: RequestsRepo = Depends(get_repo),
 ):
     polls = await repo.polls.get_all()
+    users = await repo.users.get_all()
+    employees = await repo.employees.get_all()
+
     return templates.TemplateResponse(
-        request=request, name="admin/index.html", context={"polls": polls}
+        request=request,
+        name="admin/index.html",
+        context={"polls": polls, "users": users, "employees": employees},
     )

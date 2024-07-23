@@ -19,7 +19,7 @@ async def command_admin_handler(message: Message) -> None:
         await message.bot.set_chat_menu_button(
             chat_id=message.chat.id,
             menu_button=MenuButtonWebApp(
-                text="Admin Panel",
+                text="Web App",
                 web_app=WebAppInfo(url=f"{settings.WEB_APP_URL}"),
             ),
         )

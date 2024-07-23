@@ -9,7 +9,7 @@ from app.database.repo.base import BaseRepo
 class EmployeeRepo(BaseRepo):
     async def get_employee(self, telegram_id: int) -> Optional[Employee]:
         """
-        Ищет и возвращает экземпляр модели сотрудника по telegram_id, если такой есть в БД
+        Возвращает экземпляр модели сотрудника по telegram_id, если есть в БД
         """
         insert_stmt = select(Employee).where(
             telegram_id == Employee.telegram_id
