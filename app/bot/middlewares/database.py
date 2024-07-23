@@ -8,9 +8,8 @@ from app.database.repo.requests import RequestsRepo
 
 class DatabaseMiddleware(BaseMiddleware):
     """
-    Cлужит для интеграции подключения к базе данных в процесс обработки событий телеграм-бота
-    и предоставляет данные о пользователе из базы в контексте обработчиков,
-    упрощая управление информацией о пользователях и их взаимодействии с ботом.
+    Cлужит для интеграции подключения к базе данных в хендлеры бота
+    и предоставляет данные о пользователе из базы в хендлеры.
     """
 
     def __init__(self, session_pool) -> None:
@@ -33,9 +32,13 @@ class DatabaseMiddleware(BaseMiddleware):
                 first_name=event_from_user.first_name,
                 last_name=event_from_user.last_name,
             )
+            employee = await repo.employees.get_employee(
+                telegram_id=user.telegram_id
+            )
 
             data["repo"] = repo
             data["user"] = user
+            data["employee"] = employee
 
             result = await handler(event, data)
         return result

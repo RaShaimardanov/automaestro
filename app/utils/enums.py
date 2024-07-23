@@ -1,38 +1,38 @@
 from enum import Enum
 
 
-class BaseOptionsEnum(Enum):
-
-    @classmethod
-    def get_all_values(cls):
-        return " ".join([member.value.get("represent") for member in cls])
-
-
 class OrderStatus(Enum):
-    service = "В работе"
-    ready = "Готов"
-    issued = "Выдан"
+    SERVICE = "В работе"
+    READY = "Готов"
+    ISSUED = "Выдан"
 
 
-class OptionsSmileEnum(BaseOptionsEnum):
-    confuse = {"score": 0, "represent": "👎"}
-    pristine = {"score": 1, "represent": "😐"}
-    confirm = {"score": 2, "represent": "👍"}
+class OptionsSmileEnum(Enum):
+    CONFUSE = "👎"
+    NEUTRAL = "😐"
+    CONFIRM = "👍"
+
+    def __str__(self):
+        return f"Смайлы 👎 😐 👍"
 
 
-class OptionsScoreEnum(BaseOptionsEnum):
-    poor = {"score": 1, "represent": "😞"}
-    fair = {"score": 2, "represent": "😕"}
-    average = {"score": 3, "represent": "😐"}
-    good = {"score": 4, "represent": "🙂"}
-    excellent = {"score": 5, "represent": "😊"}
+class OptionsScoreEnum(Enum):
+    POOR = "1"
+    FAIR = "2"
+    AVERAGE = "3"
+    GOOD = "4"
+    EXCELLENT = "5"
+
+    def __str__(self):
+        return f"Оценка 1-5"
 
 
 class OptionsType(Enum):
-    smile = OptionsSmileEnum
-    score = OptionsScoreEnum
-    custom = None
+    SMILE = OptionsSmileEnum
+    SCORE = OptionsScoreEnum
+    CUSTOM = None
 
-    def get_all_values(self):
-        if self.value is not None:
-            return self.value.get_all_values()
+
+class PollType(Enum):
+    CLIENT = "Опрос клиентов"
+    EMPLOYEE = "Опрос сотрудников"

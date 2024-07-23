@@ -1,0 +1,23 @@
+{% if employees %}
+<div class="container border rounded mt-3">
+  <table class="table caption-top">
+    <caption>Сотрудики</caption>
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Имя и фамилия</th>
+          <th scope="col">Почта</th>
+        </tr>
+      </thead>
+      <tbody class="counter-container">
+        {% for employee in employees %}
+          <tr class="number">
+            <th scope="row" ></th>
+            <td>{{ employee.first_name }} {{ employee.last_name }}</td>
+            <td>{{ employee.email }}</td>
+          </tr>
+      {% endfor %}
+      </tbody>
+  </table>
+</div>
+{% endif %}

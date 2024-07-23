@@ -1,0 +1,6 @@
+.env
+.prod.env
+.git
+.env_example
+.idea/
+log.log

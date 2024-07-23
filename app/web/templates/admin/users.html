@@ -1,0 +1,23 @@
+{% if users %}
+<div class="container border rounded mt-3">
+  <table class="table caption-top">
+    <caption>Пользователи</caption>
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Имя и фамилия</th>
+          <th scope="col">№ автомобля</th>
+        </tr>
+      </thead>
+      <tbody class="counter-container">
+        {% for user in users %}
+          <tr class="number">
+            <th scope="row" ></th>
+            <td>{{ user.first_name }} {{ user.last_name }}</td>
+            <td>{% if user.car %}{{ user.car }}{% else %}Не указан{% endif %}</td>
+          </tr>
+      {% endfor %}
+      </tbody>
+  </table>
+</div>
+{% endif %}

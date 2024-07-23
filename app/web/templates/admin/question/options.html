@@ -1,0 +1,41 @@
+{% if not question.options_type.value %}
+  {% if question.options %}
+      <table class="table caption-top">
+        <caption>Варианты ответа</caption>
+          <tbody class="counter-container">
+            {% for option in question.options %}
+              <tr class="number">
+                <th scope="row" ></th>
+                <td>
+                  {{ option.value }}
+                </td>
+              </tr>
+          {% endfor %}
+          </tbody>
+      </table>
+  {% endif %}
+  <div class="d-grid gap-2">
+      <button onclick="showhide(AddOption)" class="btn btn-outline-primary btn-sm mb-3 w">
+         Добавить новый вариант ответа
+      </button>
+  </div>
+  <div id="AddOption" class="mb-3" style="display: none">
+      <form action="#" method="post"  enctype="multipart/form-data" class="needs-validation">
+          <div class="row g-2 pb-2">
+              <label class="form-label">
+                  <input  id="value" name="value" type="text" placeholder="Вариант ответа" class="form-control form-control-sm">
+              </label>
+          </div>
+          <div class="d-grid gap-2">
+              <button type="submit" class="btn btn-sm btn-primary">Добавить</button>
+          </div>
+      </form>
+  </div>
+{% else %}
+  <div class="input-group my-3">
+    <label class="input-group-text">Тип ответов</label>
+    <select class="form-select d-flex" aria-label="Disabled select" disabled>
+      <option selected>{% for option in question.options %}&nbsp;{{ option.value }}&nbsp;{% endfor %}</option>
+    </select>
+  </div>
+{% endif %}

@@ -2,7 +2,6 @@ from fastapi import APIRouter, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 
-from app.core.config import settings
 from app.core.paths import TEMPLATES_FOLDER
 from app.web.api.endpoints.admin.main import router as admin_router
 

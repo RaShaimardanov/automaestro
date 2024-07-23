@@ -9,11 +9,7 @@ from app.database.models import User
 
 class BaseRepo:
     """
-    A class representing a base repository for handling database operations.
-
-    Attributes:
-        session (AsyncSession): The database session used by the repository.
-
+    Класс, реализующий функциональность репозитория для выполнения операций с базой данных.
     """
 
     def __init__(self, model, session):
@@ -26,8 +22,16 @@ class BaseRepo:
         )
         return db_obj.scalars().first()
 
+    async def get_by_attribute(self, **kwargs):
+        db_obj = await self.session.execute(
+            select(self.model).filter_by(**kwargs)
+        )
+        return db_obj.scalars().first()
+
     async def get_all(self):
-        db_objs = await self.session.execute(select(self.model))
+        db_objs = await self.session.execute(
+            select(self.model).order_by(self.model.id)
+        )
         return db_objs.scalars().all()
 
     async def create(self, data: dict, user: Optional[User] = None):
@@ -41,7 +45,6 @@ class BaseRepo:
 
     async def update(self, obj, update_data: dict):
         obj_data = jsonable_encoder(obj)
-
         for field in obj_data:
             if field in update_data:
                 setattr(obj, field, update_data[field])

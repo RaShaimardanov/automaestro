@@ -1,0 +1,31 @@
+{% extends "admin/base.html" %}
+{% block content %}
+<div class="container border rounded mt-3 py-4">
+    <form hx-patch="/admin/poll/{{ poll.id }}" hx-push-url="true" hx-target="body" enctype="multipart/form-data" class="needs-validation">
+        <div class="row g-3">
+            <label class="form-label">
+                <input  id="name" name="name" type="text" placeholder="Название" class="form-control" value="{{ poll.name }}" required>
+            </label>
+            <label class="form-label">
+                <textarea id="description" name="description" placeholder="Описание" class="form-control"  rows="10"  required>{{ poll.description }}</textarea>
+            </label>
+             <div class="input-group mb-3">
+                 <label class="input-group-text" for="poll_type">Тип опроса</label>
+                 <select class="form-select" id="poll_type" name="poll_type">
+                   <option value="CLIENT" selected>Опрос клиентов</option>
+                   <option value="EMPLOYEE">Опрос сотрудников</option>
+                 </select>
+             </div>
+            <label class="form-label" for="file-upload" >
+                <input  id="file-upload" name="image" type="file" class="form-control" placeholder="Изображение">
+            </label>
+            <label class="form-label">
+                <input  id="slug" name="slug" type="text" placeholder="Ссылка" class="form-control" value="{{ poll.slug }}" required>
+            </label>
+            <div class="d-grid gap-2">
+               <button type="submit" class="btn btn-sm btn-primary">Сохранить</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock content %}
