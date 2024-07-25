@@ -1,7 +1,7 @@
 import os
 
 from aiogram import F
-from aiogram.fsm.scene import on, After
+from aiogram.fsm.scene import After, on
 from aiogram.types import CallbackQuery, FSInputFile
 from fluentogram import TranslatorRunner
 

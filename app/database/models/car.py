@@ -1,4 +1,4 @@
-from sqlalchemy import String, ForeignKey
+from sqlalchemy import ForeignKey, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.models import Base
@@ -11,7 +11,7 @@ class Car(Base):
         String(9), unique=True, comment="Гос. номер", nullable=False
     )
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
-    user: Mapped["User"] = relationship(
+    user: Mapped["User"] = relationship(  # type: ignore
         "User", back_populates="car", lazy="selectin"
     )
 

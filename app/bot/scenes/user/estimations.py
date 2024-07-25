@@ -1,15 +1,15 @@
 import asyncio
 
 from aiogram import F
-from aiogram.fsm.scene import Scene, on, After
+from aiogram.fsm.scene import After, Scene, on
 from aiogram.types import CallbackQuery, Message, Voice
 from celery.result import AsyncResult
 from fluentogram import TranslatorRunner
 
+from app.bot.utils.callback_data import EstimationsCallback
 from app.database.models import User
 from app.database.repo.requests import RequestsRepo
 from app.services.tasks.messages import transcribe_voice_task
-from app.bot.utils.callback_data import EstimationsCallback
 from app.utils.speech_to_text import download_and_convert_voice
 
 

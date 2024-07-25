@@ -1,11 +1,11 @@
-from sqlalchemy import Integer, ForeignKey, Text, Boolean
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy import Boolean, ForeignKey, Integer, Text
 from sqlalchemy.dialects.postgresql import ENUM, TIMESTAMP
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-
-from app.utils.enums import OrderStatus
 from app.database.models import Base
 from app.database.models.mixins import TimestampMixin
+from app.database.models.user import User
+from app.utils.enums import OrderStatus
 
 
 class Visit(Base, TimestampMixin):
@@ -25,8 +25,8 @@ class Visit(Base, TimestampMixin):
     employee_id: Mapped[int] = mapped_column(
         ForeignKey("employees.id", ondelete="SET NULL")
     )
-    user: Mapped["User"] = relationship(
-        "User",
+    user: Mapped[User] = relationship(
+        User,
         backref="user",
         lazy="selectin",
     )

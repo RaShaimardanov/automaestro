@@ -1,6 +1,6 @@
 .env
 .prod.env
 .git
-.env_example
+.env.example
 .idea/
 log.log

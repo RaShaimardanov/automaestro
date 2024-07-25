@@ -1,8 +1,6 @@
-from sqlalchemy.ext.asyncio import (
-    AsyncEngine,
-    async_sessionmaker,
-    create_async_engine,
-)
+from sqlalchemy.ext.asyncio import (AsyncEngine, async_sessionmaker,
+                                    create_async_engine)
+
 from app.core.config import settings
 from app.database.repo.requests import RequestsRepo
 

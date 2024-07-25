@@ -1,14 +1,14 @@
-from fastapi import APIRouter, Request, Depends, status, HTTPException
-from fastapi.responses import HTMLResponse
-from fastapi.responses import RedirectResponse
+import uuid
+
+from fastapi import APIRouter, Depends, HTTPException, Request, status
+from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 
 from app.core.paths import TEMPLATES_FOLDER
-from app.database.setup import get_repo
 from app.database.repo.requests import RequestsRepo
+from app.database.setup import get_repo
 from app.utils.enums import OptionsType
-from app.web.api.utils import process_question_form, process_poll_form
-
+from app.web.api.utils import process_poll_form, process_question_form
 
 router = APIRouter(prefix="/poll")
 templates = Jinja2Templates(directory=TEMPLATES_FOLDER)
@@ -21,6 +21,8 @@ async def add_poll(
 ):
     """Эндпоинт для добавления нового опроса"""
     poll_dict = await process_poll_form(request)
+    poll_dict["slug"] = uuid.uuid4().hex[:6]
+
     poll = await repo.polls.create(poll_dict)
 
     return RedirectResponse(
@@ -36,8 +38,8 @@ async def poll_detail(
     repo: RequestsRepo = Depends(get_repo),
 ):
     """Эндпоинт для загрузки страницы с опросом"""
-    print(request.cookies.get("telegram_id"))
     poll = await repo.polls.get(poll_id)
+
     return templates.TemplateResponse(
         request=request,
         name="admin/poll/detail.html",
@@ -66,7 +68,7 @@ async def poll_update(
 
 
 @router.get(path="/{poll_id}/update", response_class=HTMLResponse)
-async def poll_update(
+async def poll_update_page(
     request: Request,
     poll_id: int,
     repo: RequestsRepo = Depends(get_repo),
@@ -100,7 +102,7 @@ async def poll_delete(
         await repo.polls.remove(poll)
 
     return RedirectResponse(
-        url=f"/admin",
+        url="/admin",
         status_code=status.HTTP_303_SEE_OTHER,
     )
 

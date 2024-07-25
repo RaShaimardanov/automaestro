@@ -1,11 +1,7 @@
 from aiogram import Router
-from aiogram.types import (
-    Message,
-    WebAppInfo,
-    MenuButtonWebApp,
-    MenuButtonDefault,
-)
 from aiogram.filters import Command
+from aiogram.types import (MenuButtonDefault, MenuButtonWebApp, Message,
+                           WebAppInfo)
 
 from app.core.config import settings
 

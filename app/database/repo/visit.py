@@ -1,6 +1,6 @@
 from typing import Optional
 
-from sqlalchemy import select, and_
+from sqlalchemy import and_, select
 from sqlalchemy.dialects.postgresql import insert
 
 from app.database.models import Visit

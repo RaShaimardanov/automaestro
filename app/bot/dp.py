@@ -1,13 +1,13 @@
 from aiogram import Dispatcher
 from aiogram.enums import ChatType
 from aiogram.fsm.scene import SceneRegistry
-from aiogram.fsm.storage.memory import SimpleEventIsolation, MemoryStorage
+from aiogram.fsm.storage.memory import MemoryStorage, SimpleEventIsolation
 
 from app.bot.handlers.admin import router
-from app.bot.scenes import scenes_list, router_list
 from app.bot.middlewares.chat_type import ChatTypeMiddleware
-from app.bot.middlewares.lang import LangMiddleware
 from app.bot.middlewares.database import DatabaseMiddleware
+from app.bot.middlewares.lang import LangMiddleware
+from app.bot.scenes import router_list, scenes_list
 from app.database.setup import async_session_pool
 
 

@@ -2,11 +2,11 @@ from aiogram.fsm.scene import on
 from aiogram.types import CallbackQuery
 from fluentogram import TranslatorRunner
 
+from app.bot.keyboards.inline.user import profile_menu_kb
+from app.bot.scenes.mixins import MenuScene
 from app.bot.utils.enums import MenuOptions
 from app.database.models import User
-from app.bot.scenes.mixins import MenuScene
 from app.database.repo.requests import RequestsRepo
-from app.bot.keyboards.inline.user import profile_menu_kb
 
 
 class ProfileScene(MenuScene, state="profile_user"):

@@ -1,15 +1,16 @@
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
-from app.utils.enums import OrderStatus
-from app.bot.utils.enums import MenuOptions
 from app.bot.keyboards.inline.base import build_keyboard
 from app.bot.utils.callback_data import (
-    MenuActionCallback,
     ChangeStatusCallback,
+    MenuActionCallback,
 )
+from app.bot.utils.enums import MenuOptions
+from app.utils.enums import OrderStatus
 
 
 def main_menu_employee_kb(visits) -> InlineKeyboardMarkup:
+    """Клавиатура главного меню сотрудника"""
     buttons = []
     if visits:
         buttons.append(
@@ -32,6 +33,7 @@ def main_menu_employee_kb(visits) -> InlineKeyboardMarkup:
 
 
 def register_menu_kb() -> InlineKeyboardMarkup:
+    """Кнопка запуска сцены регистрации сотрудника"""
     buttons = [
         InlineKeyboardButton(
             text=MenuOptions.REGISTER_EMPLOYEE.text,
@@ -44,6 +46,7 @@ def register_menu_kb() -> InlineKeyboardMarkup:
 
 
 def profile_menu_kb() -> InlineKeyboardMarkup:
+    """Клавиатура меню профиля сотрудника"""
     buttons = [
         InlineKeyboardButton(
             text="Обновить контактные данные",
@@ -60,6 +63,7 @@ def profile_menu_kb() -> InlineKeyboardMarkup:
 
 
 def work_menu_kb(visits) -> InlineKeyboardMarkup:
+    """Клавиатура с автомобилями которые находятся в работе у сотрудика"""
     buttons = [
         InlineKeyboardButton(
             text=f"{visit.user.car.license_plate_number} • {visit.status.value}",
@@ -73,6 +77,7 @@ def work_menu_kb(visits) -> InlineKeyboardMarkup:
 
 
 def work_detail_menu_kb(visit) -> InlineKeyboardMarkup:
+    """Клавиатура с функциями изменения статуса автомобиля"""
     buttons = []
     if visit.status == OrderStatus.SERVICE:
         smile = "🔔" if visit.notify_ready else "🔕"

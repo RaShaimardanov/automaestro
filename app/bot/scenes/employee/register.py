@@ -1,16 +1,16 @@
 from aiogram import F
-from aiogram.fsm.scene import on
 from aiogram.enums import MessageEntityType
+from aiogram.fsm.scene import on
 from aiogram.types import CallbackQuery, Message
 from fluentogram import TranslatorRunner
 
-from app.core.logger import logger
-from app.bot.utils.enums import MenuOptions
-from app.bot.scenes.mixins import MenuScene
-from app.utils.gen_qrcode import generate_qrcode
 from app.bot.keyboards.inline.base import update_kb
-from app.database.models import User, Employee
+from app.bot.scenes.mixins import MenuScene
+from app.bot.utils.enums import MenuOptions
+from app.core.logger import logger
+from app.database.models import Employee, User
 from app.database.repo.requests import RequestsRepo
+from app.utils.gen_qrcode import generate_qrcode
 
 
 class RegisterEmployeeScene(MenuScene, state="employee_register_scene"):

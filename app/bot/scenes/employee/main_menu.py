@@ -3,11 +3,11 @@ from aiogram.fsm.scene import on
 from aiogram.types import CallbackQuery, Message
 from fluentogram import TranslatorRunner
 
+from app.bot.keyboards.inline import employee as kb
+from app.bot.scenes.mixins import MenuScene
 from app.core.logger import logger
 from app.database.models import Employee
 from app.database.repo.requests import RequestsRepo
-from app.bot.scenes.mixins import MenuScene
-from app.bot.keyboards.inline import employee as kb
 
 
 class MainMenuEmployeeScene(MenuScene, state="main_menu_employee"):
@@ -50,24 +50,26 @@ class MainMenuEmployeeScene(MenuScene, state="main_menu_employee"):
         repo: RequestsRepo,
         i18n: TranslatorRunner,
     ):
-        """Вход в сцену через обратный вызов"""
+        """Вход в сцену через коллбэк"""
         visits = await repo.visits.get_current_visits_by_employee_id(
             employee_id=employee.id
         )
         try:
-            await callback_query.message.edit_text(
+            message = await callback_query.message.edit_text(
                 text=i18n.employee.main.menu(total=len(visits)),
                 reply_markup=kb.main_menu_employee_kb(visits),
             )
+            await self.wizard.update_data(message=message)
 
         except TelegramBadRequest as e:
             # если предыдущее сообщение было удалено
             if "message to edit not found" in str(e):
-                await callback_query.bot.send_message(
+                message = await callback_query.bot.send_message(
                     chat_id=employee.telegram_id,
                     text=i18n.employee.main.menu(total=len(visits)),
                     reply_markup=kb.main_menu_employee_kb(visits),
                 )
+                await self.wizard.update_data(message=message)
             else:
                 logger.error(f"Error menu message {employee.telegram_id}: {e}")
 

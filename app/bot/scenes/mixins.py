@@ -1,9 +1,9 @@
 from aiogram import F
-from aiogram.types import CallbackQuery
 from aiogram.fsm.scene import Scene, on
+from aiogram.types import CallbackQuery
 
-from app.bot.utils.enums import MenuOptions
 from app.bot.utils.callback_data import MenuActionCallback
+from app.bot.utils.enums import MenuOptions
 
 
 class MenuScene(Scene, callback_query_without_state=True):

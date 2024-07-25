@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Request, Depends
+from fastapi import APIRouter, Depends, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 
@@ -6,7 +6,6 @@ from app.core.paths import TEMPLATES_FOLDER
 from app.database.repo.requests import RequestsRepo
 from app.database.setup import get_repo
 from app.web.api.endpoints.admin.poll import router as poll_router
-
 
 router = APIRouter(prefix="/admin")
 router.include_router(poll_router)

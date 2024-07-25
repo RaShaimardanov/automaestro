@@ -1,4 +1,4 @@
-from aiogram.fsm.scene import on, After
+from aiogram.fsm.scene import After, on
 from aiogram.types import CallbackQuery
 from fluentogram import TranslatorRunner
 

@@ -1,14 +1,15 @@
+from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.utils.keyboard import InlineKeyboardBuilder
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
+from app.bot.utils.callback_data import AnswerCallback, PollCallback
 from app.database.models import Question
-from app.bot.utils.callback_data import PollCallback, AnswerCallback
 from app.utils.enums import OptionsType
 
 
 def launch_poll_kb(
     poll_id: int, questions_quantity: int
 ) -> InlineKeyboardMarkup:
+    """Клавиатура для запуска опроса"""
     return InlineKeyboardMarkup(
         row_width=1,
         inline_keyboard=[
@@ -27,6 +28,7 @@ def launch_poll_kb(
 def get_options_kb(
     question: Question, questions_quantity: int, question_number: int
 ) -> InlineKeyboardMarkup:
+    """Клавиатура с вариантами ответов"""
     builder = InlineKeyboardBuilder()
     for option in question.options:
         builder.button(

@@ -9,3 +9,6 @@
 .counter-container tr th::before {
  content: counters(number, ".") " ";
 }
+.card-text {
+ white-space: pre-wrap;
+}

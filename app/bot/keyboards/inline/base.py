@@ -1,10 +1,11 @@
 from typing import List
 
-from aiogram.utils.keyboard import InlineKeyboardBuilder
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 
 def update_kb() -> InlineKeyboardBuilder:
+    """Кнопка <Обновить>"""
     builder = InlineKeyboardBuilder()
     builder.button(
         text="Обновить",
@@ -15,6 +16,7 @@ def update_kb() -> InlineKeyboardBuilder:
 
 
 def back_kb() -> InlineKeyboardBuilder:
+    """Кнопка « Назад"""
     builder = InlineKeyboardBuilder()
     builder.button(
         text="« Назад",
@@ -29,7 +31,7 @@ def build_keyboard(
     width: int = 1,
     include_back: bool = False,
 ) -> InlineKeyboardMarkup:
-
+    """Конструктор клавиатуры"""
     builder = InlineKeyboardBuilder()
 
     for button in buttons:

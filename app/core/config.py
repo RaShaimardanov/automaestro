@@ -1,7 +1,7 @@
 from functools import lru_cache
-from typing import Optional, List, Set
+from typing import Optional
 
-from pydantic import field_validator, Field
+from pydantic import Field, field_validator
 from pydantic_core.core_schema import ValidationInfo
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -12,9 +12,9 @@ class BaseConfig(BaseSettings):
 
 class TelegramBotSettings(BaseConfig):
     BOT_TOKEN: str
-    BOT_PARSE_MODE: str
-    BOT_PROTECT_CONTENT: bool
-    BOT_DROP_PENDING_UPDATES: bool
+    BOT_PARSE_MODE: str = "HTML"
+    BOT_PROTECT_CONTENT: bool = True
+    BOT_DROP_PENDING_UPDATES: bool = True
     BOT_USERNAME: str
 
     WEBHOOK_URL: str

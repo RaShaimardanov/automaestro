@@ -1,7 +1,8 @@
 import io
+import os
 
-from pydub import AudioSegment
 import whisper
+from pydub import AudioSegment
 
 from app.bot.bot import bot
 from app.core.paths import VOICES_DIR
@@ -13,6 +14,7 @@ async def download_and_convert_voice(voice_file_id: str, user_id: int) -> str:
     voice_ogg = io.BytesIO()
     await bot.download_file(voice_file_info.file_path, voice_ogg)
 
+    os.makedirs(VOICES_DIR, exist_ok=True)
     voice_path = f"{VOICES_DIR}/voice-{user_id}-{voice_file_id}.mp3"
     AudioSegment.from_file(voice_ogg, format="ogg").export(
         voice_path, format="mp3"
