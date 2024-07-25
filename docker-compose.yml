@@ -13,7 +13,7 @@ services:
   app:
     build: .
     env_file: .prod.env
-    command: python -m app
+    command: bash -c "alembic upgrade head && python -m app"
     volumes:
       - static:/automaestro/app/resources/data/
     depends_on:

@@ -1,6 +1,6 @@
 from typing import Optional
 
-from sqlalchemy import String, Text, ForeignKey
+from sqlalchemy import ForeignKey, String, Text
 from sqlalchemy.dialects.postgresql import ENUM
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import Mapped, mapped_column, relationship

@@ -15,19 +15,18 @@
       </table>
   {% endif %}
   <div class="d-grid gap-2">
-      <button onclick="showhide(AddOption)" class="btn btn-outline-primary btn-sm mb-3 w">
+      <button onclick="showhide(AddOption)" type="button" class="btn btn-outline-primary mb-3 w">
          Добавить новый вариант ответа
       </button>
   </div>
   <div id="AddOption" class="mb-3" style="display: none">
       <form action="#" method="post"  enctype="multipart/form-data" class="needs-validation">
           <div class="row g-2 pb-2">
-              <label class="form-label">
-                  <input  id="value" name="value" type="text" placeholder="Вариант ответа" class="form-control form-control-sm">
-              </label>
-          </div>
-          <div class="d-grid gap-2">
-              <button type="submit" class="btn btn-sm btn-primary">Добавить</button>
+              <div class="input-group">
+                  <input type="text" name="value" class="form-control" placeholder="Вариант ответа" id="value">
+                  <label for="value"></label>
+                <button class="btn btn-outline-secondary" type="submit">Добавить</button>
+              </div>
           </div>
       </form>
   </div>

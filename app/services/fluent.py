@@ -2,7 +2,7 @@ from pathlib import Path
 from typing import Optional
 
 from fluent_compiler.bundle import FluentBundle
-from fluentogram import TranslatorHub, FluentTranslator
+from fluentogram import FluentTranslator, TranslatorHub
 
 from app.core.paths import LOCALES_DIR
 
@@ -24,12 +24,7 @@ class TranslationLoader:
 
 
 class FluentService:
-    """
-    Предоставляет интерфейс для работы с переводами через TranslatorHub.
-
-    :param loader: Экземпляр класса TranslationLoader, используемый для загрузки переводов.
-    :param locales_map: Словарь, который маппирует ключи языков на кортежи локальных значений для TranslatorHub.
-    """
+    """Предоставляет интерфейс для работы с переводами через TranslatorHub."""
 
     def __init__(self, loader, locales_map):
         self._hub: Optional[TranslatorHub] = None
@@ -49,7 +44,9 @@ class FluentService:
                     FluentTranslator(
                         locale="ru",
                         translator=FluentBundle.from_string(
-                            "ru-RU", self.loader.get_content("ru"), use_isolating=False
+                            "ru-RU",
+                            self.loader.get_content("ru"),
+                            use_isolating=False,
                         ),
                     ),
                 ],

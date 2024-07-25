@@ -1,8 +1,8 @@
 from typing import Dict
 
-from aiogram.fsm.scene import on
-from aiogram.types import Message, CallbackQuery
 from aiogram.exceptions import TelegramBadRequest
+from aiogram.fsm.scene import on
+from aiogram.types import CallbackQuery, Message
 from fluentogram import TranslatorRunner
 
 from app.bot.keyboards.inline.user import main_menu_user_kb

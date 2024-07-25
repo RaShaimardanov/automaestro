@@ -1,11 +1,9 @@
-from typing import Optional, List
+from typing import Optional
 
-from sqlalchemy import select, and_, not_
-from sqlalchemy.orm import joinedload, selectinload
+from sqlalchemy import and_, not_, select
 
+from app.database.models import Answer, Poll, Question
 from app.database.repo.base import BaseRepo
-from app.database.models import Poll, Question, Answer
-from app.utils.enums import PollType
 
 
 class PollRepo(BaseRepo):

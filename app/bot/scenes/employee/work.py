@@ -4,15 +4,15 @@ from aiogram.types import CallbackQuery
 from fluentogram import TranslatorRunner
 from sqlalchemy import func
 
-from app.bot.utils.enums import MenuOptions
+from app.bot.keyboards.inline.employee import work_detail_menu_kb, work_menu_kb
+from app.bot.keyboards.inline.user import accept_kb, csat_kb
 from app.bot.scenes.mixins import MenuScene
-from app.bot.keyboards.inline.user import csat_kb, accept_kb
 from app.bot.utils.callback_data import ChangeStatusCallback
-from app.bot.keyboards.inline.employee import work_menu_kb, work_detail_menu_kb
+from app.bot.utils.enums import MenuOptions
 from app.database.models import Employee
 from app.database.repo.requests import RequestsRepo
-from app.utils.enums import OrderStatus
 from app.services.tasks.messages import send_message_task
+from app.utils.enums import OrderStatus
 
 
 class WorkEmployeeScene(MenuScene, state="work_employee"):

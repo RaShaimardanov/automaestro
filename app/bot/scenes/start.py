@@ -1,16 +1,15 @@
-import asyncio
-
 from aiogram import F
-from aiogram.fsm.storage.base import StorageKey
-from aiogram.types import Message, Voice
+from aiogram.filters import CommandObject, CommandStart
 from aiogram.fsm.scene import Scene, on
-from aiogram.filters import CommandStart, CommandObject
+from aiogram.fsm.storage.base import StorageKey
+from aiogram.types import Message
 from fluentogram import TranslatorRunner
 
+from app.bot.bot import bot
+from app.bot.keyboards.inline.employee import main_menu_employee_kb
 from app.bot.utils.enums import MenuOptions
 from app.database.models import User
 from app.database.repo.requests import RequestsRepo
-from app.bot.keyboards.inline.employee import main_menu_employee_kb
 from app.services.tasks.messages import send_message_task
 
 
@@ -39,7 +38,7 @@ class StartScene(
                     user_id=user.id, employee_id=employee.id
                 )
                 user_storage_key = StorageKey(
-                    bot_id=message.bot.id,
+                    bot_id=bot.id,
                     chat_id=employee.telegram_id,
                     user_id=employee.telegram_id,
                 )
@@ -50,16 +49,18 @@ class StartScene(
                 visits = await repo.visits.get_current_visits_by_employee_id(
                     employee_id=employee.id
                 )
-                reply_markup_data = main_menu_employee_kb(visits).model_dump()
-                text = i18n.employee.main.menu(total=len(visits))
-                send_message_task.delay(
-                    text, employee.telegram_id, reply_markup_data
+                message_employee = await message.bot.send_message(
+                    chat_id=employee.telegram_id,
+                    text=i18n.employee.main.menu(total=len(visits)),
+                    reply_markup=main_menu_employee_kb(visits),
                 )
+
                 prev_message = data.get("message")
                 if prev_message:
                     await prev_message.delete()
                     await self.wizard.state.storage.set_data(
-                        key=user_storage_key, data={}
+                        key=user_storage_key,
+                        data={"message": message_employee},
                     )
 
         await message.answer(text=i18n.cmd.start.show(user=user.first_name))

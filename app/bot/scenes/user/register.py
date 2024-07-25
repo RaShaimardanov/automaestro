@@ -1,8 +1,8 @@
 from typing import Optional
 
 from aiogram import F
-from aiogram.fsm.scene import on, After
-from aiogram.types import Message, CallbackQuery
+from aiogram.fsm.scene import After, on
+from aiogram.types import CallbackQuery, Message
 from fluentogram import TranslatorRunner
 
 from app.bot.keyboards.inline.base import back_kb

@@ -1,33 +1,30 @@
 <div class="d-grid gap-2">
-   <button onclick="showhide(AddPoll)" class="btn btn-outline-primary btn-sm mb-auto">
+   <button onclick="showhide(AddPoll)" type="button" class="btn btn-outline-primary mb-auto">
        Добавить новый опрос
    </button>
 </div>
 <div id="AddPoll" class="container border rounded mt-3 py-4" style="display: none">
-      <form action="/admin/poll" method="post" enctype="multipart/form-data" class="needs-validation">
-        <div class="row g-3">
-            <label class="form-label">
-                <input  id="name" name="name" type="text" placeholder="Название" class="form-control" required>
-            </label>
-            <label class="form-label">
-                <textarea id="description" name="description" placeholder="Описание" class="form-control"  rows="4" required></textarea>
-            </label>
-             <div class="input-group mb-3">
-                 <label class="input-group-text" for="poll_type">Тип опроса</label>
-                 <select class="form-select form-control-sm" id="poll_type" name="poll_type">
-                   <option value="CLIENT" selected>Опрос клиентов</option>
-                   <option value="EMPLOYEE">Опрос сотрудников</option>
-                 </select>
-             </div>
-            <label class="form-label" for="file-upload" >
-                <input  id="file-upload" name="image" type="file" class="form-control" placeholder="Изображение">
-            </label>
-            <label class="form-label">
-                <input  id="slug" name="slug" type="text" placeholder="Ссылка" class="form-control" required>
-            </label>
-            <div class="d-grid gap-2">
-                <button type="submit" class="btn btn-sm btn-primary">Добавить</button>
-            </div>
+    <form action="/admin/poll" method="post" enctype="multipart/form-data" class="needs-validation">
+        <div class="form-floating mb-3">
+            <input  id="name" name="name" type="text" placeholder="Название" class="form-control" required>
+            <label class="form-label" for="name">Название</label>
         </div>
-      </form>
+        <div class="form-floating mb-3">
+            <textarea id="description" name="description" placeholder="Описание" class="form-control" style="height: 250px" required></textarea>
+            <label class="form-label" for="description">Описание</label>
+        </div>
+        <div class="form-floating mb-3">
+            <select class="form-select form-control-sm" id="poll_type" name="poll_type">
+                <option value="CLIENT" selected>Опрос клиентов</option>
+                <option value="EMPLOYEE">Опрос сотрудников</option>
+            </select>
+            <label for="poll_type">Тип опроса</label>
+        </div>
+        <div class="mb-3">
+            <input  id="file-upload" name="image" type="file" class="form-control" placeholder="Изображение">
+        </div>
+        <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-primary">Добавить</button>
+        </div>
+    </form>
 </div>

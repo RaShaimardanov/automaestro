@@ -1,6 +1,5 @@
 {% extends "admin/base.html" %}
 {% block title %}Вопрос {{ question.title }}{% endblock title %}
-{% block name %}{{  question.title }}{% endblock name %}
 {% block content %}
 <div class="card mb-3">
   <div class="row g-0">
@@ -12,22 +11,20 @@
     <div class="col-md-8">
       <div class="card-body">
         <h5 class="card-title">{{ question.title }}</h5>
-        <p class="card-text">{{ question.description }}</p>
+        <p class="card-text" style="white-space: pre-wrap;">{{ question.description | safe}}</p>
         <p class="card-text">{{ question.text_ask }}</p>
-
         {% include "admin/question/options.html" %}
-
         <div class="d-grid gap-2 d-md-block">
             <div class="row">
                <div class="col">
                  <button hx-get="{{ question.id }}/update"  hx-push-url="true" hx-target="body"
-                         type="button" class="btn btn-outline-primary btn-sm col-12">
+                         type="button" class="btn btn-outline-primary col-12">
                      Редактировать
                  </button>
                </div>
                 <div class="col">
                       <button hx-delete="{{ question.id }}" hx-push-url="true" hx-target="body" hx-confirm="Удалить вопрос?"
-                              type="button" class="btn btn-outline-danger btn-sm col-12">
+                              type="button" class="btn btn-outline-danger col-12">
                           Удалить
                       </button>
                 </div>

@@ -2,7 +2,6 @@
     if(tg !== undefined) {
         tg.ready()
         tg.expand();  //  открываем окно во весь экран
-        tg.enableVerticalSwipes() //  подключаем вертикальную прокрутку
         function setupBackButton() {
             //  устанавливаем кнопку < Назад
             const currentUrl = window.location.pathname;

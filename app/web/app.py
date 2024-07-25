@@ -1,15 +1,14 @@
 from contextlib import asynccontextmanager
 
 from aiogram.types import Update
-
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
 from app.bot.bot import bot
-from app.core.logger import logger
-from app.core.config import settings
 from app.bot.dp import dp
-from app.core.paths import STATIC_FOLDER, IMAGES_DIR
+from app.core.config import settings
+from app.core.logger import logger
+from app.core.paths import IMAGES_DIR, STATIC_FOLDER
 from app.web.api.routers import router
 from app.web.middlewares.telegram import TelegramIDCheckingMiddleware
 

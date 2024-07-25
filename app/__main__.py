@@ -1,7 +1,7 @@
 import uvicorn
 
-from app.web.app import app
 from app.core.config import settings
+from app.web.app import app
 
 if __name__ == "__main__":
     uvicorn.run(

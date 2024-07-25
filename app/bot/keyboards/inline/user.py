@@ -1,17 +1,18 @@
 from typing import Dict
 
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
 from app.bot.keyboards.inline.base import build_keyboard
-from app.bot.utils.enums import MenuOptions, EstimationsEnum
 from app.bot.utils.callback_data import (
-    MenuActionCallback,
     EstimationsCallback,
+    MenuActionCallback,
     NotificationsCallback,
 )
+from app.bot.utils.enums import EstimationsEnum, MenuOptions
 
 
 def main_menu_user_kb(context: Dict[str, str]) -> InlineKeyboardMarkup:
+    """Клавиатура главного меню пользователя"""
     buttons = [
         InlineKeyboardButton(
             text=MenuOptions[scene].text,
@@ -27,6 +28,7 @@ def main_menu_user_kb(context: Dict[str, str]) -> InlineKeyboardMarkup:
 
 
 def profile_menu_kb() -> InlineKeyboardMarkup:
+    """Клавиатура меню профиля пользователя"""
     buttons = [
         InlineKeyboardButton(
             text=MenuOptions.REGISTER.text,
@@ -48,6 +50,7 @@ def notifications_setting_kb(
     visit_id: int,
     position: bool = False,
 ) -> InlineKeyboardMarkup:
+    """Клавиатура меню настройки уведомлений пользователя"""
     buttons = [
         InlineKeyboardButton(
             text="Не уведомлять" if position else "Уведомить о готовности",
@@ -60,6 +63,7 @@ def notifications_setting_kb(
 
 
 def notifications_receive_kb(visit_id: int) -> InlineKeyboardMarkup:
+    """Клавиатура сообщения с предложением получить уведомление"""
     buttons = [
         InlineKeyboardButton(
             text="Уведомить о готовности",
@@ -78,6 +82,7 @@ def notifications_receive_kb(visit_id: int) -> InlineKeyboardMarkup:
 
 
 def csat_kb(visit_id: int):
+    """Клавиатура сообщения оценки качества обслуживания"""
     buttons = [
         InlineKeyboardButton(
             text=estimation.smile,

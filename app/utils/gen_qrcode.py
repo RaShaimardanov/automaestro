@@ -1,13 +1,11 @@
-from qrcode.main import QRCode
-from qrcode.constants import (
-    ERROR_CORRECT_H,
-)
+from qrcode.constants import ERROR_CORRECT_H
 from qrcode.image.styledpil import StyledPilImage
 from qrcode.image.styles.colormasks import SolidFillColorMask
 from qrcode.image.styles.moduledrawers import CircleModuleDrawer
+from qrcode.main import QRCode
 
-from app.core.logger import logger
 from app.core.config import settings
+from app.core.logger import logger
 from app.core.paths import QRCODES_DIR
 
 
@@ -28,6 +26,7 @@ async def generate_qrcode(parameter: int):
             embeded_image_path=f"{QRCODES_DIR}/logo.jpg",
         )
         filename = f"{parameter}.jpg"
+
         image.save(QRCODES_DIR / filename)
         return filename
 

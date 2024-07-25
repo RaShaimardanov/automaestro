@@ -11,7 +11,7 @@
     <div class="col-md-8">
       <div class="card-body">
         <h5 class="card-title">{{ poll.name }}</h5>
-          <p class="card-text">{{ poll.description }}</p>
+          <p class="card-text" style="white-space: pre-wrap;">{{ poll.description | safe }}</p>
       </div>
         </div>
     </div>
@@ -20,13 +20,13 @@
     <div class="row">
         <div class="col">
             <button hx-get="{{ poll.id }}/update"  hx-push-url="true" hx-target="body"
-                    type="button" class="btn btn-outline-primary btn-sm col-12">
+                    type="button" class="btn btn-outline-primary col-12">
                 Редактировать
             </button>
         </div>
         <div class="col">
             <button hx-delete="{{ poll.id }}" hx-push-url="true" hx-target="body" hx-confirm="Удалить опрос?"
-                    type="button" class="btn btn-outline-danger btn-sm col-12">
+                    type="button" class="btn btn-outline-danger col-12">
                 Удалить
             </button>
         </div>

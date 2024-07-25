@@ -19,5 +19,6 @@ def check_required_field(data: dict):
     if missing_fields:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Missing required form fields: {', '.join(missing_fields)}",
+            detail=f"Missing required form fields: "
+            f"{', '.join(missing_fields)}",
         )

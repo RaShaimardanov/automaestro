@@ -6,13 +6,13 @@ from aiogram.fsm.scene import Scene, on
 from aiogram.types import CallbackQuery, FSInputFile
 from fluentogram import TranslatorRunner
 
+from app.bot.keyboards.inline.poll import get_options_kb, launch_poll_kb
 from app.bot.keyboards.inline.user import notifications_receive_kb
-from app.bot.keyboards.inline.poll import launch_poll_kb, get_options_kb
-from app.bot.utils.callback_data import PollCallback, AnswerCallback
+from app.bot.utils.callback_data import AnswerCallback, PollCallback
 from app.bot.utils.enums import MenuOptions
 from app.core.logger import logger
 from app.core.paths import IMAGES_DIR
-from app.database.models import User, Question
+from app.database.models import Question, User
 from app.database.repo.requests import RequestsRepo
 
 
@@ -23,16 +23,16 @@ class PollScene(Scene, state="poll"):
         self,
         callback_query: CallbackQuery,
         repo: RequestsRepo,
-        i18n: TranslatorRunner,
         context: str = None,
     ):
         """Отправляет пользователю описание опроса и кнопку для запуска опроса."""
         if context:
             poll = await repo.polls.get_by_attribute(slug=context)
 
-            if os.path.isfile(IMAGES_DIR / poll.image_name):
+            if poll.image_name and os.path.isfile(
+                IMAGES_DIR / poll.image_name
+            ):
                 # отправляем сообщение с изображением, если оно существует
-                await callback_query.message.delete()
                 await callback_query.message.answer_photo(
                     photo=FSInputFile(IMAGES_DIR / poll.image_name),
                     caption=poll.description,
@@ -49,6 +49,7 @@ class PollScene(Scene, state="poll"):
                         questions_quantity=len(poll.questions),
                     ),
                 )
+            await callback_query.message.delete()
             return
         await self.wizard.goto(MenuOptions.MAIN_MENU_USER.scene)
 
@@ -86,7 +87,7 @@ class PollScene(Scene, state="poll"):
     ):
         """
         Обрабатывает нажатие кнопки с ответом и записывает ответ в базу данных.
-        Проверяет наличие следующего вопроса в базе данных, если следующий вопрос существует, отправляет его пользователю.
+        Отправляет пользователю следующий вопрос при наличии.
         """
         try:
             # сохраняем пришедший ответ
@@ -158,9 +159,6 @@ class PollScene(Scene, state="poll"):
         """Функция отправки вопроса"""
         try:
             question_number += 1
-
-            await callback_query.message.delete()
-
             text = i18n.question.text(
                 title=question.title,
                 descripion=question.description,
@@ -169,7 +167,9 @@ class PollScene(Scene, state="poll"):
                 question_number=question_number,
             )
 
-            if os.path.isfile(IMAGES_DIR / question.image_name):
+            if question.image_name and os.path.isfile(
+                IMAGES_DIR / question.image_name
+            ):
                 # отправляем сообщение с изображением, если оно существует
                 await callback_query.message.answer_photo(
                     photo=FSInputFile(IMAGES_DIR / question.image_name),
@@ -191,13 +191,13 @@ class PollScene(Scene, state="poll"):
                         question_number=question_number,
                     ),
                 )
-
+            await callback_query.message.delete()
         except TelegramBadRequest as e:
             logger.error(
                 f"Error while sending question: {question.id}. Exception: {e}"
             )
 
         except Exception as e:
-            logger.error(
+            logger.exception(
                 f"Error while sending question: {question.id}. Exception: {e}"
             )

@@ -1,4 +1,4 @@
-from typing import Optional, Any
+from typing import Any, Optional
 
 from aiogram.filters.callback_data import CallbackData
 

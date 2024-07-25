@@ -2,26 +2,14 @@ from dataclasses import dataclass
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.database.models import (
-    Car,
-    Visit,
-    User,
-    Employee,
-    Poll,
-    Question,
-    Option,
-    Answer,
-)
+from app.database.models import (Answer, Car, Employee, Option, Poll, Question,
+                                 User, Visit)
 from app.database.repo.car import CarRepo
-from app.database.repo.poll import (
-    PollRepo,
-    QuestionRepo,
-    OptionRepo,
-    AnswerRepo,
-)
+from app.database.repo.employee import EmployeeRepo
+from app.database.repo.poll import (AnswerRepo, OptionRepo, PollRepo,
+                                    QuestionRepo)
 from app.database.repo.user import UserRepo
 from app.database.repo.visit import VisitRepo
-from app.database.repo.employee import EmployeeRepo
 
 
 @dataclass
