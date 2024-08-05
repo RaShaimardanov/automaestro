@@ -55,124 +55,30 @@
 ```
 .
 ├── alembic
-│   ├── env.py
-│   ├── README
-│   ├── script.py.mako
-│   └── versions
-│       └── 1072eee61acc_first_migration.py
-├── alembic.ini
 ├── app
-│   ├── bot
-│   │   ├── bot.py
-│   │   ├── dp.py
-│   │   ├── handlers
-│   │   │   └── admin.py
-│   │   ├── keyboards
-│   │   │   └── inline
-│   │   │       ├── base.py
-│   │   │       ├── employee.py
-│   │   │       ├── __init__.py
-│   │   │       ├── poll.py
-│   │   │       └── user.py
-│   │   ├── middlewares
-│   │   │   ├── chat_type.py
-│   │   │   ├── database.py
-│   │   │   └── lang.py
-│   │   ├── scenes
-│   │   │   ├── employee
-│   │   │   │   ├── main_menu.py
-│   │   │   │   ├── profile.py
-│   │   │   │   ├── register.py
-│   │   │   │   └── work.py
-│   │   │   ├── mixins.py
-│   │   │   ├── poll.py
-│   │   │   ├── start.py
-│   │   │   └── user
-│   │   │       ├── estimations.py
-│   │   │       ├── main_menu.py
-│   │   │       ├── notifications.py
-│   │   │       ├── profile.py
-│   │   │       ├── register.py
-│   │   │       └── send_vcard.py
+│   ├── bot               # файлы бота
+│   │   ├── handlers      # хендлеры
+│   │   ├── keyboards     # клавиатуры
+│   │   ├── middlewares   # мидлвари
+│   │   ├── scenes        # сцены
 │   │   └── utils
-│   │       ├── callback_data.py
-│   │       └── enums.py
-│   ├── core
-│   │   ├── config.py
-│   │   ├── constants.py
-│   │   ├── logger.py
-│   │   └── paths.py
-│   ├── database
+│   ├── core              # файлы конфигурации
+│   ├── database          # файлы для работы с БД
 │   │   ├── models
-│   │   │   ├── base.py
-│   │   │   ├── car.py
-│   │   │   ├── mixins.py
-│   │   │   ├── poll.py
-│   │   │   ├── user.py
-│   │   │   └── visit.py
-│   │   ├── repo
-│   │   │   ├── base.py
-│   │   │   ├── car.py
-│   │   │   ├── employee.py
-│   │   │   ├── poll.py
-│   │   │   ├── requests.py
-│   │   │   ├── user.py
-│   │   │   └── visit.py
-│   │   └── setup.py
-│   ├── __main__.py
+│   │   └──  repo
+│   ├── __main__.py       # файл запуска
 │   ├── resources
-│   │   ├── data
-│   │   │   ├── images
-│   │   │   ├── qrcodes
-│   │   │   │   └── logo.jpg
-│   │   │   └── voices
-│   │   └── locales
-│   │       └── ru.ftl
+│   │   ├── data          # загруженные файлы
+│   │   └── locales       # файлы локализации
 │   ├── services
 │   │   ├── fluent.py
-│   │   └── tasks
-│   │       ├── apps.py
-│   │       └── messages.py
+│   │   └── tasks         # celery
 │   ├── utils
-│   │   ├── enums.py
-│   │   ├── gen_qrcode.py
-│   │   ├── send_message.py
-│   │   └── speech_to_text.py
-│   └── web
-│       ├── api
-│       │   ├── endpoints
-│       │   │   └──  admin
-│       │   │       ├── main.py
-│       │   │       └── poll.py
-│       │   ├── routers.py
-│       │   ├── utils.py
-│       │    validators.py
-│       ├── app.py
-│       ├── middlewares
-│       │   └── telegram.py
-│       └── templates
-│           ├── admin
-│           │   ├── base.html
-│           │   ├── employees.html
-│           │   ├── index.html
-│           │   ├── poll
-│           │   │   ├── add.html
-│           │   │   ├── detail.html
-│           │   │   ├── list.html
-│           │   │   └── update.html
-│           │   ├── question
-│           │   │   ├── add.html
-│           │   │   ├── detail.html
-│           │   │   ├── list.html
-│           │   │   ├── options.html
-│           │   │   └── update.html
-│           │   └── users.html
-│           ├── index.html
-│           └── static
-│               ├── context.js
-│               ├── images
-│               │   └── logo_shadow.jpg
-│               └── style.css
+│   └── web               # файлы web app
+│       ├── api           
+│       ├── middlewares   # мидлвари
+│       └── templates     # шаблоны
+├── alembic.ini
 ├── docker-compose.yml
 ├── Dockerfile
 ├── pyproject.toml
