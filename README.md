@@ -111,6 +111,9 @@ ADMINS_IDS=[11111111, 22222222]
 > [Полный пример переменных окружения](.env.example).
 #### 3. Локальный запуск
 ```
+poetry install
+```
+```
 alembic upgrade head
 ```
 ```
