@@ -40,15 +40,25 @@
 - просмотр списка пользователей и гос.номеров автомобилей
 - просмотр списка сотрудников
 
+## :movie_camera: Демонстрация возможностей
+*Для полноты понимания происходящего, разверните видео на весь экран и используйте паузы.*
 <details>
-<summary>Демонстрация возможностей</summary>
+<summary>Пользователь</summary>
  <video src='https://github.com/user-attachments/assets/590705c7-1d72-4d7d-9b44-1a6a17d22496'/></video>
-  _______________
+</details>
+
+<details>
+<summary>Сотрудник</summary>
  <video src='https://github.com/user-attachments/assets/c92bb6ae-2b30-40b5-94c0-ea2323ad8bdd'/></video>
- ______________
+</details>
+
+<details>
+<summary>Администратор</summary>
  <video src='https://github.com/user-attachments/assets/a9f1c7ec-d120-4ea4-90bc-41e622cca5d5'/></video>
 </details>
 
+> [!TIP]
+> Если у вас есть автомобиль и вы хотите принять участие в опросе, [добро пожаловать](https://t.me/automaestro_bot) :raised_hands:
 ## :hammer_and_pick: Технологии
 
 Проект состоит из следующих компонентов:
