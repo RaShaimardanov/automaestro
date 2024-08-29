@@ -57,8 +57,6 @@
  <video src='https://github.com/user-attachments/assets/a9f1c7ec-d120-4ea4-90bc-41e622cca5d5'/></video>
 </details>
 
-> [!TIP]
-> Если у вас есть автомобиль и вы хотите принять участие в опросе, [добро пожаловать](https://t.me/automaestro_bot) :raised_hands:
 ## :hammer_and_pick: Технологии
 
 Проект состоит из следующих компонентов:
